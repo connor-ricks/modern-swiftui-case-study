@@ -2,7 +2,28 @@
 This section focuses on how we should model our application's views and business logic. SwiftUI provides some powerful tools out of the box, but they don't necessarily provide the functionality required to implement complex logic in a modular and testable manner.
 
 ## Table of Contents
-{{TOC}}
+- [Previously: Standups.app Overview](#previously-standupsapp-overview)
+- [What is Important?](#what-is-important)
+   	- [Why is Consistency Important?](#why-is-consistency-important)
+    	- [Why is Modularity Important?](#why-is-modularity-important)
+    	- [Why is Separating UI from UX Important?](#why-is-separating-ui-from-ux-important)
+  	- [Why is Testability Important?](#why-is-testability-important)
+- [@State vs @StateObject vs @ObservedObject](#state-vs-stateobject-vs-observedobject)
+	- [@State](#state)
+	- [@StateObject](#stateobject)
+	- [@ObservedObject](#observedobject)
+- [Does Every View Need a Model?](#does-every-view-need-a-model)
+- [Standups.app Examples](#standupsapp-examples)
+
+	- [StandupsListFeature](#standupslistfeature)
+		- [StandupsListView](#standupslistview)
+		- [StandupsListModel](#standupslistmodel)
+	- [StandupDetailFeature](#standupdetailfeature)
+		- [StandupDetailView](#standupdetailview)
+		- [StandupDetailModel](#standupdetailmodel)
+	- [Views Without Models](#views-without-models)
+- [Conclusion](#conclusion)
+- [Up next: Navigation](#up-next-navigation)
 
 ## Previously: `Standups.app` Overview
 In the [[standups_overview|previous section]] we covered what the `Standups.app` application does, outlining the apps screens and functionality.
@@ -37,7 +58,7 @@ Testing is critical for a software developer. Testing is what allows us to verif
 ## `@State` vs `@StateObject` vs `@ObservedObject`
 Now that we've outlined what's important to developing a scalable application, let's talk through some of the tools Apple provides us in SwiftUI to tackle state management.
 
-### `@State` ❌
+### `@State`
 This is often the state management tool you see most in SwiftUI, it allows us to keep track of some of data within our application's `View`, updating it as the user interacts with our app. While it is easy to use, it comes with quite a few caveats as we aim to create achieve all the things we deemed are important.
 
 ```swift
@@ -67,7 +88,7 @@ In addition to testing, by modeling our state locally within the `View` using `@
 
 `@State` acts as a local source of truth, and cannot be influenced from the outside. As a result, using `@State` is less than ideal when it comes to creating features that interact with each other. 😞
 
-### `@StateObject` ❌
+### `@StateObject`
 Next up is `@StateObject`, which works very similarly to `@State`. To make use of `@StateObject` we must create a `class` that conforms to `ObservableObject`. From there, we can define all the state properties we want to manage in our `View`, prefixing them with `@Published`
 
 ```swift
@@ -124,7 +145,9 @@ struct MyView: View {
     @StateObject var model = DataModel()
 }
 ```
-> SwiftUI creates a new instance of the object only once for each instance of the structure that declares the object. When published properties of the observable object change, SwiftUI updates the parts of any view that depend on those properties: [^[Apple Developer Documentation - @StateObject](https://developer.apple.com/documentation/swiftui/stateobject)]
+> SwiftUI creates a new instance of the object only once for each instance of the structure that declares the object. When published properties of the observable object change, SwiftUI updates the parts of any view that depend on those properties: 
+ 
+[Source - @StateObject](https://developer.apple.com/documentation/swiftui/stateobject)
 
 This means that changing the value of `@StateObject` from outside will not affect the `View`. 
 
@@ -169,7 +192,7 @@ There are ways to cause the changes to actually update the child, like making us
 
 `@StateObject` is so close to what we want in a scalable, testable, and modular SwiftUI application. 🥲 We can test the logic of a feature, and remove logic from the view layer, but we are still isolated from the rest of the application, preventing us from injecting dependencies and testing integrations between `Views`.
 
-### `@ObservedObject` ✅
+### `@ObservedObject`
 `@ObservedObject` works virtually the same as `@StateObject`, with one major benefit! We can modify it externally to the owning `View`! 🥳 
 
 Take the above example shown in `@StateObject` with the `Toggle` inside `MyParent` failing to re-render the text inside `MyChild`. Simply by switching from `@StateObject` to `@ObservedObject`, the functionality works as intended. 😁
@@ -185,12 +208,12 @@ Now that we've gone over the benefits of `ObservedObject` over other SwiftUI sta
 ### `StandupsListFeature`
 Let's start by looking at `StandupsListFeature` and breakdown its structure so that we can better understand the benefits of separating our UI from our UX.
 
-The feature is broken down into two core objects. One SwiftUI `View` called [[StandupsListView|`StandupsListView`]] and one `ObservableObject` called [[StandupsListModel.swift|`StandupsListModel`]].
+The feature is broken down into two core objects. One SwiftUI `View` called `StandupsListView` and one `ObservableObject` called `StandupsListModel`.
 
 This feature has quite a few capabilities we need to support...
 1. Users are able to view all of their standups in a list.
-2. Users are able to navigate to the [[StandupDetailView.swift|`StandupsDetailView`]], in the `StandupDetailFeature`, by tapping on a list item.
-3. Users are able to tap the add button, navigating them to the [[EditStandupView.swift|`EditStandupView`]], in the `StandupDetailFeature`, where they can enter the information for their new standup.
+2. Users are able to navigate to the `StandupsDetailView`, in the `StandupDetailFeature`, by tapping on a list item.
+3. Users are able to tap the add button, navigating them to the `EditStandupView`, in the `StandupDetailFeature`, where they can enter the information for their new standup.
 4. The list of standups needs to stay updated as information changes inside child features.
 5. The list of standups should be persisted to disk so that the user can save their application state across sessions.
 
@@ -205,7 +228,7 @@ Taking a glance at this `View` you can see it contains one single property...
  
 This is the source of truth for this `View`. Any data to be rendered or logic to be performed lives inside that `model`, and the `View` will reference various properties or methods to perform the logic necessary to accomplish our list of capabilities.
 
-Scrolling through the `body` of the [[StandupsListView]], you'll see that there is no logic inside the declarative UI, The `View` simply references to properties and functions inside the `model`. This makes it really easy to see how this `View` is structured and what's going on.
+Scrolling through the `body` of the `StandupsListView`, you'll see that there is no logic inside the declarative UI, The `View` simply references to properties and functions inside the `model`. This makes it really easy to see how this `View` is structured and what's going on.
 
 #### `StandupsListModel`
 Opening our model object, you'll quickly see that this is where our business logic lives.
@@ -219,32 +242,32 @@ We have two core properties power this model...
 ```
 
 - `standups` is what powers our `View's` `List`, placing our standups on screen for the user.
-- `destination` powers our `View's` navigation to various areas of our app. We won't dive into this too much here, as we will cover this more inside [[navigation|Navigation]].
+- `destination` powers our `View's` navigation to various areas of our app. We won't dive into this too much here, as we will cover this more inside [Navigation](navigation.md).
 
 Scrolling down, you'll see a section `// MARK: Actions`. This is where all of our user interactions with the `View` live.
 
-Looking at `confirmAddStandupButtonTapped()` you can see some business logic that happens after the user has confirmed they want to add a new [[Standup.swift]]. The logic involves removing any of the `Attendees` from the `Standup` that have no name before appending it to the `standups` array. If this logic existed inside the `View` layer. We would have no way of testing this without writing a UI test. However, our logic lives in a model, and we can test that!
+Looking at `confirmAddStandupButtonTapped()` you can see some business logic that happens after the user has confirmed they want to add a new `Standup`. The logic involves removing any of the `Attendees` from the `Standup` that have no name before appending it to the `standups` array. If this logic existed inside the `View` layer. We would have no way of testing this without writing a UI test. However, our logic lives in a model, and we can test that!
 
-Jumping to [[StandupsListTests]], we see a test named `testNamelessAttendees`. We haven't covered [[dependencies_and_testing|Dependencies & Testing]] or [[navigation|Navigation]] yet, so let's not dive too deep into how those portions of the test work.
+Jumping to `StandupsListTests`, we see a test named `testNamelessAttendees`. We haven't covered [Dependencies & Testing](dependencies_and_testing.md) or [Navigation](navigation.md) yet, so let's not dive too deep into how those portions of the test work.
 
-1. On `Line:21`, we call `listModel.addStandupButtonTapped()`, which should open the [[EditStandupView.swift]].
-2. On `Line:27` we modify the [[EditStandupModel.swift]]'s attendees directly in the test.
+1. On `Line:21`, we call `listModel.addStandupButtonTapped()`, which should open the `EditStandupView`.
+2. On `Line:27` we modify the `EditStandupModel's` attendees directly in the test.
 3. Then, on `Line:32`, we call `listModel.confirmAddStandupButtonTapped()`
 
-From there, we perform a few assertions on the [[StandupsListModel.swift]] to confirm our logic executed as expected.
-- Assert that a `Standup` added to the `standups` property in [[StandupsListModel.swift]].
+From there, we perform a few assertions on the `StandupsListModel` to confirm our logic executed as expected.
+- Assert that a `Standup` added to the `standups` property in `StandupsListModel`.
 - Assert that the added `Standup` has only one `Attendee`
 - Assert that the one `Attendee's` name is `John`.
 
-And just like that, we've been able to unit test that our filtering of nameless `Attendees` worked as expected. We were also able to test that our navigation and integration between different features worked successfully, but that will be covered more in [[navigation|Navigation]] and [[dependencies_and_testing|Dependencies & Testing]].
+And just like that, we've been able to unit test that our filtering of nameless `Attendees` worked as expected. We were also able to test that our navigation and integration between different features worked successfully, but that will be covered more in [Dependencies & Testing](dependencies_and_testing.md) and [Navigation](navigation.md).
 
-### `StandupsDetailFeature`
-Similarly to the `StandupsListFeature` we covered above, the `StandupsDetailFeature` is broken down into a model called [[StandupDetailModel.swift]] and a view called [[StandupDetailView]].
+### `StandupDetailFeature`
+Similarly to the `StandupsListFeature` we covered above, the `StandupsDetailFeature` is broken down into a model called `StandupDetailModel` and a view called `StandupDetailView`.
 
-Let's break down how we model the views and logic necessary to support swipe-to-delete actions in our [[StandupDetailView.swift|StandupDetailView's]] Past Meetings section.
+Let's break down how we model the views and logic necessary to support swipe-to-delete actions in our `StandupDetailView's` Past Meetings section.
 
 #### `StandupDetailView`
-Just like the [[StandupsListView.swift]], this `View` contains a single `@ObservedObject` called `model` that powers all the functionality and data the user will see and interact with.
+Just like the `StandupsListView`, this `View` contains a single `@ObservedObject` called `model` that powers all the functionality and data the user will see and interact with.
 
 The `body` is declarative and void of business logic.
 
@@ -252,7 +275,7 @@ Scrolling down to `Line:54` we can see a `Section` dedicated to displaying our m
 
 Again, just as before. The execution of the logic is delegated to the `model` by calling `model.deleteMeetings(atOffsets: indicies)`
 
-Let's go look at the [[StandupDetailModel.swift]] to see how this business logic is implemented.
+Let's go look at the `StandupDetailModel` to see how this business logic is implemented.
 
 #### `StandupDetailModel`
 Inside the model, let's look at `Line:45`
@@ -261,7 +284,7 @@ Inside the model, let's look at `Line:45`
 
 There isn't much logic to it, we simply remove the meetings at the provided indices, but because it exists in the model, we can test it! 
 
-Jump over to [[StandupDetailTests.swift]] and you'll see one example test called `testMeetingDeletion`. Let's break it down.
+Jump over to `StandupDetailTests` and you'll see one example test called `testMeetingDeletion`. Let's break it down.
 
 1. We initialize a `StandupDetailModel` with our mock `Standup`
 2. We assert that the model actually uses the `Standup` we initialized it with.
@@ -274,9 +297,9 @@ Again, it's a small example, but we were able to fully test what we expected to 
 ### `Views` Without Models
 We've covered `Views` that perform business logic and shown how we can extract that business logic into a model, but what about an example where we don't need a model?
 
-Let's look at [[CardView.swift]] inside the `StandupListFeature`. This is the `View` we render inside the [[StandupsListView.swift|StandupListView's]] `List` and shows us  each `Standup` we are tracking.
+Let's look at `CardView` inside the `StandupListFeature`. This is the `View` we render inside the `StandupsListView's` `List` and shows us  each `Standup` we are tracking.
 
-Because the `Button` lives outside of the `CardView` in the [[StandupsListView.swift|StandupListView's]] `body`, there isn't actually and logic or interaction being performed in the `CardView`. As a result, this means we can simply pass our `Standup` to the [[CardView.swift]] and let it layout the information on the screen. 
+Because the `Button` lives outside of the `CardView` in the `StandupListView's` `body`, there isn't actually and logic or interaction being performed in the `CardView`. As a result, this means we can simply pass our `Standup` to the `CardView` and let it layout the information on the screen. 
 
 There is no logic to test here, and for that reason, we don't need a model.
 
@@ -286,7 +309,7 @@ It may be beneficial to write a snapshot test to verify that UI looks as the des
 By following the examples outlined above, we've shown how we can write modular, isolated features in a consistent and testable manner.
 
 ## Up next: Navigation
-In the next section, we will talk about [[navigation|Navigation]] and how it is important to derive our application's navigational structure through state.
+In the next section, we will talk about [Navigation](navigation.md) and how it is important to derive our application's navigational structure through state.
 
 
 
