@@ -26,7 +26,7 @@ This section focuses on how we should model our application's views and business
 - [Up next: Navigation](#up-next-navigation)
 
 ## Previously: `Standups.app` Overview
-In the [[standups_overview|previous section]] we covered what the `Standups.app` application does, outlining the apps screens and functionality.
+In the [previous section](standups_overview.md) we covered what the `Standups.app` application does, outlining the apps screens and functionality.
 
 ## What is Important?
 In order to frame the solution, it's important to discuss what we are aiming to achieve. 
