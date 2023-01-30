@@ -2,7 +2,12 @@
 This section focuses on how we manage dependencies. Separating our dependency logic out into smaller more testable chunks allows us to better isolate functionality and build reusable components of our application. In addition, supporting dependency injection enables more powerful mocking behavior not just in our tests, but also our SwiftUI previews.
 
 ## Table of Contents
-{{TOC}}
+- [Previously: Navigation](#previously-navigation)
+- [What is Important?](#what-is-important)
+- [Standups.app Examples](#standupsapp-examples)
+  - [Data Persistence](#data-persistence)
+  - [Speech Client](#speech-client)
+- [Conclusion](#conclusion)
 
 ## Previously: Navigation
 In the [previous section](navigation.md) we covered the importance of state driven navigation. We unlocked powerful capabilities by modeling our navigation as `Destination` enums. Now it's time to cover dependencies
@@ -43,7 +48,9 @@ If you look at `StandupsProvider`, starting on `Line:16` you'll see a how closel
 1. We first extend `DependencyValues` providing a property accessor for our injected dependency.
 2. We extend our dependency to `DependencyKey` and provide a `liveValue` which works like `defaultValue` in `@Environment`. There, we can provide the value for our dependency in production applications.
 
-With just a couple lines of code, we have provided the ability to inject production level dependencies into our application. However, there's another powerful tool inside `@Dependency` that we can utilize. 
+With just a couple lines of code, we have provided the ability to inject production level dependencies into our application. However, there's another powerful tool inside `@Dependency` that we can utilize.
+
+### Speech Client
 
 Jump to `SpeechClient`. This is the dependency that powers the speech transcript while we record a meeting. On `Line:23`, you'll see us provide a `liveValue` just like we did for our `StandupsProvider`, but below that on `Line:40`, you'll see us define a `previewValue` as well. This allows us to swap in a different dependency for our SwiftUI previews. In the case of the `SpeechClient`, this is really important! SpeechKit doesn't work in SwiftUI previews, so if we did not provide a `previewValue` we would be unable to view any previews of our `RecordStandupView`.
 
