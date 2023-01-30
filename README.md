@@ -6,11 +6,10 @@ The objective is to outline what it takes to build a **vanilla** SwiftUI applica
 From the foundation created by PointFree, This project has been updated to go beyond what it means to follow modern best practices and architecture to outline things like structure, and modularity.
 
 ## Table of Contents
-1. [[standups_overview|`Standups.app` Overview]]
-2. [[managing_logic_and_views|Managing Logic & Views]]
-3. [[navigation|Navigation]]
-4. [[side_effects|Side Effects]]
-5. [[dependencies_and_testing|Dependencies & Testing]]
+1. [`Standups.app` Overview](Documentation/standups_overview.md)
+2. [Managing Logic & Views](Documentation/managing_logic_and_views.md)
+3. [Navigation](Documentation/navigation.md)
+5. [Dependencies & Testing](Documentation/dependencies_and_testing.md)
 6. TODO
 	- `Tagged`
 	- `IdentifiedCollections`
