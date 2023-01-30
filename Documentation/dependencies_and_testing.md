@@ -70,12 +70,5 @@ Any models created with `@Dependency` properties inside the `operation` block wi
 ## Conclusion
 `@Dependency` provides us with powerful tools that help us write isolated dependencies and inject them into our business logic. We are then able to effectively swap out our dependencies to assist us in writing effective tests of our business logic.
 
-## Up Next:
-TODO
-
-
-
-
-
 
 
