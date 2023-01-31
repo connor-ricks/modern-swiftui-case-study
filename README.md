@@ -14,3 +14,5 @@ From the foundation created by PointFree, This project has been updated to go be
 	- `Tagged`
 	- `IdentifiedCollections`
 	- Design System
+	- Package Structure
+	- Project Organization
