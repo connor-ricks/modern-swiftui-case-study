@@ -7,7 +7,7 @@ import Models
 import StandupDetailFeature
 
 @MainActor
-public class StandupsListModel: ObservableObject {
+final public class StandupsListModel: ObservableObject {
     
     // MARK: Constants
     
@@ -22,7 +22,7 @@ public class StandupsListModel: ObservableObject {
     
     public enum Destination {
         case add(EditStandupModel)
-        case detail(StandupDetailModel)
+        case detail(StandupDetailModel<StandupsListView>)
     }
     
     // MARK: Properties
@@ -122,5 +122,12 @@ public class StandupsListModel: ObservableObject {
         } catch {
             // TODO: Handle Errors!
         }
+    }
+}
+
+extension StandupsListView: StandupDetailToStandupListView {}
+extension StandupsListModel: StandupDetailToStandupListModel {
+    public convenience init() {
+        self.init(destination: nil)
     }
 }

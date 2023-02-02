@@ -9,15 +9,15 @@ import RecordStandupFeature
 
 // MARK: - StandupDetailView
 
-public struct StandupDetailView: View {
+public struct StandupDetailView<V: StandupDetailToStandupListView>: View {
     
     // MARK: Properties
     
-    @ObservedObject private var model: StandupDetailModel
+    @ObservedObject private var model: StandupDetailModel<V>
     
     // MARK: Initializers
     
-    public init(model: StandupDetailModel) {
+    public init(model: StandupDetailModel<V>) {
         self.model = model
     }
     
@@ -81,11 +81,20 @@ public struct StandupDetailView: View {
                     .foregroundColor(.red)
                     .frame(maxWidth: .infinity)
             }
+            
+            Button("Show All Standups") { model.showAllStandupsButtonTapped() }
         }
         .navigationTitle(model.standup.title)
         .toolbar {
             Button("Edit") { model.editButtonTapped() }
         }
+        .navigationDestination(
+            unwrapping: $model.destination,
+            case: /StandupDetailModel.Destination.standups,
+            destination: { $model in
+                V.init(model: model)
+            }
+        )
         .navigationDestination(
             unwrapping: $model.destination,
             case: /StandupDetailModel.Destination.meeting,
@@ -122,20 +131,20 @@ public struct StandupDetailView: View {
 
 // MARK: - StandupDetailView+Previews
 
-struct StandupDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            var standup = Standup.mock
-            let _ = standup.duration = 60
-            let _ = standup.attendees = [
-                Attendee(id: Attendee.ID(UUID()), name: "Blob")
-            ]
-            StandupDetailView(
-                model: StandupDetailModel(
-                    destination: .record(RecordStandupModel(standup: standup)),
-                    standup: standup
-                )
-            )
-        }
-    }
-}
+//struct StandupDetailView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NavigationView {
+//            var standup = Standup.mock
+//            let _ = standup.duration = 60
+//            let _ = standup.attendees = [
+//                Attendee(id: Attendee.ID(UUID()), name: "Blob")
+//            ]
+//            StandupDetailView(
+//                model: StandupDetailModel(
+//                    destination: .record(RecordStandupModel(standup: standup)),
+//                    standup: standup
+//                )
+//            )
+//        }
+//    }
+//}

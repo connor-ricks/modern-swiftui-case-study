@@ -9,7 +9,7 @@ import RecordStandupFeature
 // MARK: - StandupDetailModel
 
 @MainActor
-public class StandupDetailModel: ObservableObject {
+public class StandupDetailModel<V: StandupDetailToStandupListView>: ObservableObject {
     
     // MARK: Destination
     
@@ -17,6 +17,7 @@ public class StandupDetailModel: ObservableObject {
         case edit(EditStandupModel)
         case meeting(Meeting)
         case record(RecordStandupModel)
+        case standups(V.Model)
     }
     
     // MARK: Properties
@@ -68,6 +69,10 @@ public class StandupDetailModel: ObservableObject {
         destination = .record(RecordStandupModel(standup: standup))
     }
     
+    func showAllStandupsButtonTapped() {
+        destination = .standups(V.Model())
+    }
+    
     // MARK: Helpers
     
     private func bind() {
@@ -83,7 +88,7 @@ public class StandupDetailModel: ObservableObject {
                 
                 self.destination = nil
             }
-        case .edit, .meeting, .none:
+        case .standups, .edit, .meeting, .none:
             break
         }
     }
