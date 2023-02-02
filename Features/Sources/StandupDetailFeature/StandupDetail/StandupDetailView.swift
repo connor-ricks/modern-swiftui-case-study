@@ -9,15 +9,15 @@ import RecordStandupFeature
 
 // MARK: - StandupDetailView
 
-public struct StandupDetailView<V: StandupListViewFacade>: View {
+public struct StandupDetailView<A: StandupListViewFacade>: View {
     
     // MARK: Properties
     
-    @ObservedObject private var model: StandupDetailModel<V>
+    @ObservedObject private var model: StandupDetailModel<A>
     
     // MARK: Initializers
     
-    public init(model: StandupDetailModel<V>) {
+    public init(model: StandupDetailModel<A>) {
         self.model = model
     }
     
@@ -92,7 +92,7 @@ public struct StandupDetailView<V: StandupListViewFacade>: View {
             unwrapping: $model.destination,
             case: /StandupDetailModel.Destination.standups,
             destination: { $model in
-                V.init(model: model)
+                A(model: model)
             }
         )
         .navigationDestination(

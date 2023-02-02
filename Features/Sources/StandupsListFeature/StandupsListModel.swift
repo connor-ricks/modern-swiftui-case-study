@@ -125,8 +125,8 @@ final public class StandupsListModel: ObservableObject {
     }
 }
 
-extension StandupsListView: StandupDetailToStandupListView {}
-extension StandupsListModel: StandupDetailToStandupListModel {
+extension StandupsListView: StandupListViewFacade {}
+extension StandupsListModel: StandupListModelFacade {
     public convenience init() {
         self.init(destination: nil)
     }

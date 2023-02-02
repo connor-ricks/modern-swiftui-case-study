@@ -10,7 +10,3 @@ public protocol StandupListViewFacade: View {
     associatedtype Model: StandupListModelFacade
     init(model: Model)
 }
-
-public protocol StandupDetailFeatureDependencies {
-    associatedtype StandupListFacade: StandupListViewFacade
-}

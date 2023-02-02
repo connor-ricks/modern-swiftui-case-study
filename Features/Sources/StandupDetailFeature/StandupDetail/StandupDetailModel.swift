@@ -9,7 +9,7 @@ import RecordStandupFeature
 // MARK: - StandupDetailModel
 
 @MainActor
-public class StandupDetailModel<V: StandupListViewFacade>: ObservableObject {
+public class StandupDetailModel<A: StandupListViewFacade>: ObservableObject {
     
     // MARK: Destination
     
@@ -17,7 +17,7 @@ public class StandupDetailModel<V: StandupListViewFacade>: ObservableObject {
         case edit(EditStandupModel)
         case meeting(Meeting)
         case record(RecordStandupModel)
-        case standups(V.Model)
+        case standups(A.Model)
     }
     
     // MARK: Properties
@@ -70,7 +70,7 @@ public class StandupDetailModel<V: StandupListViewFacade>: ObservableObject {
     }
     
     func showAllStandupsButtonTapped() {
-        destination = .standups(V.Model())
+        destination = .standups(A.Model())
     }
     
     // MARK: Helpers
