@@ -9,15 +9,15 @@ import RecordStandupFeature
 
 // MARK: - StandupDetailView
 
-public struct StandupDetailView<A: StandupListViewFacade>: View {
+public struct StandupDetailView<DestinationStandups: View>: View {
     
     // MARK: Properties
     
-    @ObservedObject private var model: StandupDetailModel<A>
+    @ObservedObject private var model: StandupDetailModel<DestinationStandups>
     
     // MARK: Initializers
     
-    public init(model: StandupDetailModel<A>) {
+    public init(model: StandupDetailModel<DestinationStandups>) {
         self.model = model
     }
     
@@ -105,8 +105,8 @@ public struct StandupDetailView<A: StandupListViewFacade>: View {
         .sheet(
             unwrapping: $model.destination,
             case: /StandupDetailModel.Destination.standups
-        ) { $standupsModel in
-            A(model: standupsModel)
+        ) { _ in
+            model.onRenderDestinationStandups()
         }
         .sheet(
             unwrapping: $model.destination,
@@ -130,20 +130,20 @@ public struct StandupDetailView<A: StandupListViewFacade>: View {
 
 // MARK: - StandupDetailView+Previews
 
-//struct StandupDetailView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        NavigationView {
-//            var standup = Standup.mock
-//            let _ = standup.duration = 60
-//            let _ = standup.attendees = [
-//                Attendee(id: Attendee.ID(UUID()), name: "Blob")
-//            ]
-//            StandupDetailView(
-//                model: StandupDetailModel(
-//                    destination: .record(RecordStandupModel(standup: standup)),
-//                    standup: standup
-//                )
-//            )
-//        }
-//    }
-//}
+struct StandupDetailView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationView {
+            var standup = Standup.mock
+            let _ = standup.duration = 60
+            let _ = standup.attendees = [
+                Attendee(id: Attendee.ID(UUID()), name: "Blob")
+            ]
+            StandupDetailView<EmptyView>(
+                model: StandupDetailModel(
+                    destination: .record(RecordStandupModel(standup: standup)),
+                    standup: standup
+                )
+            )
+        }
+    }
+}

@@ -9,7 +9,7 @@ import RecordStandupFeature
 // MARK: - StandupDetailModel
 
 @MainActor
-public class StandupDetailModel<A: StandupListViewFacade>: ObservableObject {
+public class StandupDetailModel<DestinationStandups: View>: ObservableObject {
     
     // MARK: Destination
     
@@ -17,7 +17,7 @@ public class StandupDetailModel<A: StandupListViewFacade>: ObservableObject {
         case edit(EditStandupModel)
         case meeting(Meeting)
         case record(RecordStandupModel)
-        case standups(A.Model)
+        case standups
     }
     
     // MARK: Properties
@@ -25,7 +25,8 @@ public class StandupDetailModel<A: StandupListViewFacade>: ObservableObject {
     @Published public internal(set) var destination: Destination? { didSet { bind() } }
     @Published public internal(set) var standup: Standup
     
-    public var onConfirmDeletion: () -> Void =  unimplemented("StandupDetailModel.onConfirmDeletion")
+    public var onConfirmDeletion: () -> Void = unimplemented("StandupDetailModel.onConfirmDeletion")
+    public var onRenderDestinationStandups: () -> DestinationStandups = unimplemented("StandupDetailModel.onRenderDestinationStandups")
     
     // MARK: Initializers
     
@@ -70,7 +71,7 @@ public class StandupDetailModel<A: StandupListViewFacade>: ObservableObject {
     }
     
     func showAllStandupsButtonTapped() {
-        destination = .standups(A.Model())
+        destination = .standups
     }
     
     // MARK: Helpers

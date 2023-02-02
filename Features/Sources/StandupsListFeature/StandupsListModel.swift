@@ -86,6 +86,10 @@ final public class StandupsListModel: ObservableObject {
                 }
             }
             
+            standupDetailModel.onRenderDestinationStandups = {
+                StandupsListView(model: .init())
+            }
+            
             destinationCancellable = standupDetailModel.$standup
                 .sink { [weak self] standup in
                     guard let self else { return }
@@ -122,12 +126,5 @@ final public class StandupsListModel: ObservableObject {
         } catch {
             // TODO: Handle Errors!
         }
-    }
-}
-
-extension StandupsListView: StandupListViewFacade {}
-extension StandupsListModel: StandupListModelFacade {
-    public convenience init() {
-        self.init(destination: nil)
     }
 }
