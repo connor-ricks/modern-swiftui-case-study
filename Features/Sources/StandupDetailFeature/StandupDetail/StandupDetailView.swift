@@ -82,7 +82,7 @@ public struct StandupDetailView<DestinationStandups: View>: View {
                     .frame(maxWidth: .infinity)
             }
             
-            Button("Show All Standups") { model.showAllStandupsButtonTapped() }
+            Button("Show all of \(model.standup.attendees[0].name)'s Standups") { model.showAllStandupsButtonTapped() }
         }
         .navigationTitle(model.standup.title)
         .toolbar {
