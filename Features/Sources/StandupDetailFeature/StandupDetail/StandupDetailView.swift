@@ -90,13 +90,6 @@ public struct StandupDetailView<A: StandupListViewFacade>: View {
         }
         .navigationDestination(
             unwrapping: $model.destination,
-            case: /StandupDetailModel.Destination.standups,
-            destination: { $model in
-                A(model: model)
-            }
-        )
-        .navigationDestination(
-            unwrapping: $model.destination,
             case: /StandupDetailModel.Destination.meeting,
             destination: { $meeting in
                 MeetingView(meeting: meeting, standup: model.standup)
@@ -109,6 +102,12 @@ public struct StandupDetailView<A: StandupListViewFacade>: View {
                 RecordStandupView(model: recordModel)
             }
         )
+        .sheet(
+            unwrapping: $model.destination,
+            case: /StandupDetailModel.Destination.standups
+        ) { $standupsModel in
+            A(model: standupsModel)
+        }
         .sheet(
             unwrapping: $model.destination,
             case: /StandupDetailModel.Destination.edit
