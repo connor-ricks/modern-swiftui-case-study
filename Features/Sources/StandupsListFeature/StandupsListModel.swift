@@ -30,6 +30,7 @@ final public class StandupsListModel: ObservableObject {
     @Dependency(\.mainQueue) var mainQueue
     @Dependency(\.standupsProvider) var standupsProvider
     
+    let attendee: Attendee?
     @Published public internal(set) var destination: Destination? { didSet { bind() } }
     @Published public internal(set) var standups: IdentifiedArrayOf<Standup>
     
@@ -38,8 +39,9 @@ final public class StandupsListModel: ObservableObject {
     
     // MARK: Initializers
     
-    public init(destination: Destination? = nil) {
+    public init(for attendee: Attendee? = nil, destination: Destination? = nil) {
         self.destination = destination
+        self.attendee = attendee
         self.standups = []
         
         loadStandups()
@@ -87,7 +89,7 @@ final public class StandupsListModel: ObservableObject {
             }
             
             standupDetailModel.onRenderDestinationStandups = {
-                StandupsListView(model: .init())
+                StandupsListView(model: .init(for: $0))
             }
             
             destinationCancellable = standupDetailModel.$standup
@@ -122,7 +124,13 @@ final public class StandupsListModel: ObservableObject {
     
     private func loadStandups() {
         do {
-            standups = try standupsProvider.load()
+            let standups = try standupsProvider.load()
+            if let attendee {
+                self.standups = standups.filter { $0.attendees.contains(where: { $0.name == attendee.name })}
+            } else {
+                self.standups = standups
+            }
+            
         } catch {
             // TODO: Handle Errors!
         }

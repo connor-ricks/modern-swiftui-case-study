@@ -26,7 +26,7 @@ public class StandupDetailModel<DestinationStandups: View>: ObservableObject {
     @Published public internal(set) var standup: Standup
     
     public var onConfirmDeletion: () -> Void = unimplemented("StandupDetailModel.onConfirmDeletion")
-    public var onRenderDestinationStandups: () -> DestinationStandups = unimplemented("StandupDetailModel.onRenderDestinationStandups")
+    public var onRenderDestinationStandups: (Attendee) -> DestinationStandups = unimplemented("StandupDetailModel.onRenderDestinationStandups")
     
     // MARK: Initializers
     

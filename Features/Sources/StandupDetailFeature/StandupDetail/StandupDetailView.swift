@@ -106,7 +106,7 @@ public struct StandupDetailView<DestinationStandups: View>: View {
             unwrapping: $model.destination,
             case: /StandupDetailModel.Destination.standups
         ) { _ in
-            model.onRenderDestinationStandups()
+            model.onRenderDestinationStandups(model.standup.attendees[0])
         }
         .sheet(
             unwrapping: $model.destination,
