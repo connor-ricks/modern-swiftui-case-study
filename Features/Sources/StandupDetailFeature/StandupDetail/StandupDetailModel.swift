@@ -17,7 +17,7 @@ public class StandupDetailModel<DestinationStandups: View>: ObservableObject {
         case edit(EditStandupModel)
         case meeting(Meeting)
         case record(RecordStandupModel)
-        case standups
+        case standups(attendee: Attendee)
     }
     
     // MARK: Properties
@@ -70,8 +70,8 @@ public class StandupDetailModel<DestinationStandups: View>: ObservableObject {
         destination = .record(RecordStandupModel(standup: standup))
     }
     
-    func showAllStandupsButtonTapped() {
-        destination = .standups
+    func showAllStandupsButtonTapped(attendee: Attendee) {
+        destination = .standups(attendee: attendee)
     }
     
     // MARK: Helpers

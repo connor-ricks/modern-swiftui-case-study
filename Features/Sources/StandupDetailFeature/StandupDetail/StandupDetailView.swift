@@ -82,7 +82,11 @@ public struct StandupDetailView<DestinationStandups: View>: View {
                     .frame(maxWidth: .infinity)
             }
             
-            Button("Show all of \(model.standup.attendees[0].name)'s Standups") { model.showAllStandupsButtonTapped() }
+            if let attendee = model.standup.attendees.first {
+                Button("Show all of \(attendee.name)'s Standups") {
+                    model.showAllStandupsButtonTapped(attendee: attendee)
+                }
+            }
         }
         .navigationTitle(model.standup.title)
         .toolbar {
@@ -105,8 +109,8 @@ public struct StandupDetailView<DestinationStandups: View>: View {
         .sheet(
             unwrapping: $model.destination,
             case: /StandupDetailModel.Destination.standups
-        ) { _ in
-            model.onRenderDestinationStandups(model.standup.attendees[0])
+        ) { $attendee in
+            model.onRenderDestinationStandups(attendee)
         }
         .sheet(
             unwrapping: $model.destination,

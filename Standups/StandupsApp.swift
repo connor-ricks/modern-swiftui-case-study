@@ -8,7 +8,11 @@ import StandupsListFeature
 struct StandupsApp: App {
     var body: some Scene {
         WindowGroup {
-            StandupsListView(model: .init())
+            StandupsListView(model: .init(
+                destination: .detail(
+                    StandupDetailModel(destination: nil, standup: try! StandupsProvider.liveValue.load().first!)
+                )
+            ))
         }
     }
 }
