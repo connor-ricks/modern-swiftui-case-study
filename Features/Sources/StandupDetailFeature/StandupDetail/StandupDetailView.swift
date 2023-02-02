@@ -9,7 +9,7 @@ import RecordStandupFeature
 
 // MARK: - StandupDetailView
 
-public struct StandupDetailView<V: StandupDetailToStandupListView>: View {
+public struct StandupDetailView<V: StandupListViewFacade>: View {
     
     // MARK: Properties
     

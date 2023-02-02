@@ -9,7 +9,7 @@ import RecordStandupFeature
 // MARK: - StandupDetailModel
 
 @MainActor
-public class StandupDetailModel<V: StandupDetailToStandupListView>: ObservableObject {
+public class StandupDetailModel<V: StandupListViewFacade>: ObservableObject {
     
     // MARK: Destination
     
