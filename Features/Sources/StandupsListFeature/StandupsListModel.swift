@@ -33,9 +33,9 @@ final public class StandupsListModel: ObservableObject {
     let attendee: Attendee?
     @Published public internal(set) var destination: Destination? { didSet { bind() } }
     @Published public internal(set) var standups: IdentifiedArrayOf<Standup>
-    
-    private var destinationCancellable: AnyCancellable?
+
     private var standupsDidChangeCancellable: AnyCancellable?
+    public var onNavigateToOtherTab: () -> Void = unimplemented("StandupsListModel.onNavigateToOtherTab")
     
     // MARK: Initializers
     
@@ -80,24 +80,16 @@ final public class StandupsListModel: ObservableObject {
     private func bind() {
         switch self.destination {
         case let .detail(standupDetailModel):
-            standupDetailModel.onConfirmDeletion = { [weak self, id = standupDetailModel.standup.id] in
-                guard let self else { return }
+            standupDetailModel.onDelete = { [weak self] standup in
                 withAnimation {
-                    self.standups.remove(id: id)
-                    self.destination = nil
+                    self?.standups.remove(id: standup.id)
+                    self?.destination = nil
                 }
             }
-            
-            standupDetailModel.onRenderDestinationStandups = {
-                StandupsListView(model: .init(for: $0))
+
+            standupDetailModel.onSave = { [weak self] standup in
+                self?.standups[id: standup.id] = standup
             }
-            
-            destinationCancellable = standupDetailModel.$standup
-                .sink { [weak self] standup in
-                    guard let self else { return }
-                    self.standups[id: standup.id] = standup
-                }
-            
         case .add, .none:
             break
         }

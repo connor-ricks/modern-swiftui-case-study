@@ -70,7 +70,9 @@ public struct StandupDetailView<DestinationStandups: View>: View {
             
             Section(content: {
                 ForEach(model.standup.attendees) { attendee in
-                    Label(attendee.name, systemImage: "person")
+                    Button(action: { model.showAllStandupsButtonTapped(attendee: attendee) }) {
+                        Label(attendee.name, systemImage: "person")
+                    }
                 }
             }, header: {
                 Text("Attendees")
@@ -81,11 +83,9 @@ public struct StandupDetailView<DestinationStandups: View>: View {
                     .foregroundColor(.red)
                     .frame(maxWidth: .infinity)
             }
-            
-            if let attendee = model.standup.attendees.first {
-                Button("Show all of \(attendee.name)'s Standups") {
-                    model.showAllStandupsButtonTapped(attendee: attendee)
-                }
+
+            Section {
+                Button("Switch to Other Tab") { model.switchToOtherTabButtonTapped() }
             }
         }
         .navigationTitle(model.standup.title)
@@ -106,11 +106,11 @@ public struct StandupDetailView<DestinationStandups: View>: View {
                 RecordStandupView(model: recordModel)
             }
         )
-        .sheet(
+        .navigationDestination(
             unwrapping: $model.destination,
-            case: /StandupDetailModel.Destination.standups
-        ) { $attendee in
-            model.onRenderDestinationStandups(attendee)
+            case: /StandupDetailModel.Destination.external
+        ) { $view in
+            view
         }
         .sheet(
             unwrapping: $model.destination,

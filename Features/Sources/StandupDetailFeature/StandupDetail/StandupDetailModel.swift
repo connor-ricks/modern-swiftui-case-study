@@ -17,7 +17,7 @@ public class StandupDetailModel<DestinationStandups: View>: ObservableObject {
         case edit(EditStandupModel)
         case meeting(Meeting)
         case record(RecordStandupModel)
-        case standups(attendee: Attendee)
+        case external(AnyView)
     }
     
     // MARK: Properties
@@ -25,8 +25,10 @@ public class StandupDetailModel<DestinationStandups: View>: ObservableObject {
     @Published public internal(set) var destination: Destination? { didSet { bind() } }
     @Published public internal(set) var standup: Standup
     
-    public var onConfirmDeletion: () -> Void = unimplemented("StandupDetailModel.onConfirmDeletion")
-    public var onRenderDestinationStandups: (Attendee) -> DestinationStandups = unimplemented("StandupDetailModel.onRenderDestinationStandups")
+    public var onDelete: (Standup) -> Void = unimplemented("StandupDetailModel.onConfirmDeletion")
+    public var onSave: (Standup) -> Void = unimplemented("StandupDetailModel.onConfirmSave")
+
+    @Dependency(\.destinationService) var destinationService
     
     // MARK: Initializers
     
@@ -47,7 +49,7 @@ public class StandupDetailModel<DestinationStandups: View>: ObservableObject {
     }
     
     func deleteButtonTapped() {
-        onConfirmDeletion()
+        onDelete(standup)
     }
     
     func editButtonTapped() {
@@ -64,6 +66,7 @@ public class StandupDetailModel<DestinationStandups: View>: ObservableObject {
         standup.attendees.removeAll { $0.name.allSatisfy(\.isWhitespace) }
         self.standup = standup
         destination = nil
+        onSave(standup)
     }
     
     func startMeetingButtonTapped() {
@@ -71,7 +74,12 @@ public class StandupDetailModel<DestinationStandups: View>: ObservableObject {
     }
     
     func showAllStandupsButtonTapped(attendee: Attendee) {
-        destination = .standups(attendee: attendee)
+        let view = destinationService.standupsListView(for: attendee)
+        destination = .external(view)
+    }
+
+    func switchToOtherTabButtonTapped() {
+        destinationService.select(tab: .other)
     }
     
     // MARK: Helpers
@@ -89,7 +97,7 @@ public class StandupDetailModel<DestinationStandups: View>: ObservableObject {
                 
                 self.destination = nil
             }
-        case .standups, .edit, .meeting, .none:
+        case .external, .edit, .meeting, .none:
             break
         }
     }
