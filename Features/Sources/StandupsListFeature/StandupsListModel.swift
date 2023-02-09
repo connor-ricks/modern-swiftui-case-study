@@ -22,7 +22,7 @@ final public class StandupsListModel: ObservableObject {
     @Dependency(\.standupsProvider) var standupsProvider
     
     let attendee: Attendee?
-    @Published public internal(set) var destination: Destination? { didSet { bind() } }
+    @Published public var destination: Destination? { didSet { bind() } }
     @Published public internal(set) var standups: IdentifiedArrayOf<Standup>
 
     private var standupsDidChangeCancellable: AnyCancellable?
@@ -46,11 +46,11 @@ final public class StandupsListModel: ObservableObject {
         destination = .add(EditStandupModel(standup: Standup(id: Standup.ID(UUID()))))
     }
     
-    func dismissAddStandupButtonTapped() {
+    public func dismissAddStandupButtonTapped() {
         destination = nil
     }
     
-    func confirmAddStandupButtonTapped() {
+    public func confirmAddStandupButtonTapped() {
         defer { destination = nil }
         
         guard case let .add(editStandupModel) = destination else { return }

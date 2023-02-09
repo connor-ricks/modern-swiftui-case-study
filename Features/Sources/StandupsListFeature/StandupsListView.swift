@@ -36,29 +36,29 @@ public struct StandupsListView: View {
             }
         }
         .navigationTitle(navigationTitle)
-        .navigationDestination(
-            unwrapping: $model.destination,
-            case: /StandupsListModel.Destination.detail
-        ) { $detailModel in
-            StandupDetailView(model: detailModel)
-        }
-        .sheet(
-            unwrapping: $model.destination,
-            case: /StandupsListModel.Destination.add
-        ) { $model in
-            NavigationView {
-                EditStandupView(model: model)
-                    .navigationTitle("New standup")
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button("Dismiss") { self.model.dismissAddStandupButtonTapped() }
-                        }
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("Add") { self.model.confirmAddStandupButtonTapped() }
-                        }
-                    }
-            }
-        }
+//        .navigationDestination(
+//            unwrapping: $model.destination,
+//            case: /StandupsListModel.Destination.detail
+//        ) { $detailModel in
+//            StandupDetailView(model: detailModel)
+//        }
+//        .sheet(
+//            unwrapping: $model.destination,
+//            case: /StandupsListModel.Destination.add
+//        ) { $model in
+//            NavigationView {
+//                EditStandupView(model: model)
+//                    .navigationTitle("New standup")
+//                    .toolbar {
+//                        ToolbarItem(placement: .cancellationAction) {
+//                            Button("Dismiss") { self.model.dismissAddStandupButtonTapped() }
+//                        }
+//                        ToolbarItem(placement: .confirmationAction) {
+//                            Button("Add") { self.model.confirmAddStandupButtonTapped() }
+//                        }
+//                    }
+//            }
+//        }
     }
 
     // MARK: Helpers
