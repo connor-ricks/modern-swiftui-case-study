@@ -112,9 +112,17 @@ public struct StandupDetailView<DestinationStandups: View>: View {
         )
         .navigationDestination(
             unwrapping: $model.destination,
-            case: /StandupDetailModel.Destination.external
+            case: /StandupDetailModel.Destination.externalPush
         ) { $view in
             view
+        }
+        .sheet(
+            unwrapping: $model.destination,
+            case: /StandupDetailModel.Destination.externalPresent
+        ) { $view in
+            NavigationView {
+                view
+            }
         }
         .sheet(
             unwrapping: $model.destination,
