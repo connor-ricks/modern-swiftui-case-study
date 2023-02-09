@@ -70,7 +70,7 @@ public struct StandupDetailView<DestinationStandups: View>: View {
             
             Section(content: {
                 ForEach(model.standup.attendees) { attendee in
-                    Button(action: { model.showAllStandupsButtonTapped(attendee: attendee) }) {
+                    Button(action: { model.pushAllStandupsButtonTapped(attendee: attendee) }) {
                         Label(attendee.name, systemImage: "person")
                     }
                 }
@@ -82,6 +82,10 @@ public struct StandupDetailView<DestinationStandups: View>: View {
                 Button("Delete") { model.deleteButtonTapped() }
                     .foregroundColor(.red)
                     .frame(maxWidth: .infinity)
+            }
+
+            if let attendee = model.standup.attendees.first {
+                Button("Preent Standups for \(attendee.name)") { model.presentAllStandupsButtonTapped(attendee: attendee) }
             }
 
             Section {

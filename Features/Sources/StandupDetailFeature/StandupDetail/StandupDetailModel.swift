@@ -17,7 +17,8 @@ public class StandupDetailModel<DestinationStandups: View>: ObservableObject {
         case edit(EditStandupModel)
         case meeting(Meeting)
         case record(RecordStandupModel)
-        case external(AnyView)
+        case externalPush(AnyView)
+        case externalPresent(AnyView)
     }
     
     // MARK: Properties
@@ -73,9 +74,14 @@ public class StandupDetailModel<DestinationStandups: View>: ObservableObject {
         destination = .record(RecordStandupModel(standup: standup))
     }
     
-    func showAllStandupsButtonTapped(attendee: Attendee) {
+    func pushAllStandupsButtonTapped(attendee: Attendee) {
         let view = destinationService.standupsListView(for: attendee)
-        destination = .external(view)
+        destination = .externalPush(view)
+    }
+
+    func presentAllStandupsButtonTapped(attendee: Attendee) {
+        let view = destinationService.standupsListView(for: attendee)
+        destination = .externalPresent(view)
     }
 
     func switchToOtherTabButtonTapped() {
@@ -97,7 +103,7 @@ public class StandupDetailModel<DestinationStandups: View>: ObservableObject {
                 
                 self.destination = nil
             }
-        case .external, .edit, .meeting, .none:
+        case .externalPush, .externalPresent, .edit, .meeting, .none:
             break
         }
     }
