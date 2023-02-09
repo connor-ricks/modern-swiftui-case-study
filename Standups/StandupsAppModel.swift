@@ -18,6 +18,12 @@ import StandupsListFeature
 @MainActor
 class StandupsAppModel: ObservableObject {
 
+    // MARK: Destination
+
+    private enum Destination {
+        case standups(StandupsListModel)
+        case other(OtherModel)
+    }
     // MARK: Properties
 
     @Published var standupsListModel: StandupsListModel
