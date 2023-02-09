@@ -9,15 +9,6 @@ import StandupDetailFeature
 @MainActor
 final public class StandupsListModel: ObservableObject {
     
-    // MARK: Constants
-    
-    private enum Constants {
-        static let standupsURL: URL = {
-            let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-            return URL(string: paths[0].absoluteString + "standups.json")!
-        }()
-    }
-    
     // MARK: Destination
     
     public enum Destination {
@@ -35,7 +26,6 @@ final public class StandupsListModel: ObservableObject {
     @Published public internal(set) var standups: IdentifiedArrayOf<Standup>
 
     private var standupsDidChangeCancellable: AnyCancellable?
-    public var onNavigateToOtherTab: () -> Void = unimplemented("StandupsListModel.onNavigateToOtherTab")
     
     // MARK: Initializers
     

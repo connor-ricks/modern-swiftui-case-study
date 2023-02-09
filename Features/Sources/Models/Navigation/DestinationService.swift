@@ -5,12 +5,8 @@ import Dependencies
 
 @MainActor public protocol DestinationServiceDelegate: AnyObject {
     func service(_ service: DestinationService, didRequestNavigationTo tab: AppTab)
-
-    associatedtype StandupList: View
-    func service(_ service: DestinationService, didRequestPresentationOfStandupsListFor attendee: Attendee) -> StandupList
-
-    associatedtype CreateStandup: View
-    func service(_ service: DestinationService, didRequestPresentationOfCreateStandup: Bool) -> CreateStandup
+    func service(_ service: DestinationService, didRequestNavigationToEditStandupFor standup: Standup)
+    func service(_ service: DestinationService, didRequestPresentationOfStandupsListFor attendee: Attendee) -> AnyView
 }
 
 @MainActor
@@ -24,20 +20,16 @@ public class DestinationService {
 
     private init() {}
 
-    public func select(tab: AppTab) {
+    public func navigateTo(tab: AppTab) {
         delegate?.service(self, didRequestNavigationTo: tab)
+    }
+
+    public func navigateToCreateStandup() {
+        delegate?.service(self, didRequestNavigationToEditStandupFor: .init(id: .init(UUID())))
     }
 
     public func standupsListView(for attendee: Attendee) -> AnyView {
         guard let view = delegate?.service(self, didRequestPresentationOfStandupsListFor: attendee) else {
-            return AnyView(Text(""))
-        }
-
-        return AnyView(view)
-    }
-
-    public func createStandupView() -> AnyView {
-        guard let view = delegate?.service(self, didRequestPresentationOfCreateStandup: true) else {
             return AnyView(Text(""))
         }
 

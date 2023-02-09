@@ -22,7 +22,9 @@ class StandupsAppModel: ObservableObject {
 
     @Published var standupsListModel: StandupsListModel
     @Published var otherModel: OtherModel
-    @Published var selectedTab: AppTab
+    @Published var selectedTab: AppTab {
+        didSet { selectedTabDidChange(old: oldValue, new: selectedTab) }
+    }
 
     @Dependency(\.destinationService) var destinationService
 
@@ -38,6 +40,17 @@ class StandupsAppModel: ObservableObject {
         self.otherModel = otherModel ?? .init()
         destinationService.delegate = self
     }
+
+    // MARK: Helpers
+
+    private func selectedTabDidChange(old: AppTab, new: AppTab) {
+        switch (old, new) {
+        case (.standups, .standups):
+            standupsListModel = .init(destination: nil)
+        default:
+            break
+        }
+    }
 }
 
 // MARK: - StandupsAppModel+DestinationService
@@ -47,20 +60,19 @@ extension StandupsAppModel: DestinationServiceDelegate {
         selectedTab = tab
     }
 
-    func service(_ service: DestinationService, didRequestNavigationToCreateStandup: Bool) -> some View {
-        return EditStandupView(model: .init(standup: Standup(id: .init(UUID()))))
-            .navigationTitle("New standup")
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Add") {
-                        print("Do something!")
-                    }
-                }
-            }
+    func service(_ service: DestinationService, didRequestNavigationToEditStandupFor standup: Standup) {
+        selectedTab = .standups
+        standupsListModel = .init(
+            destination: .add(
+                EditStandupModel(standup: standup)
+            )
+        )
     }
 
-    func service(_ service: DestinationService, didRequestPresentationOfStandupsListFor attendee: Attendee) -> some View {
-        StandupsListView(model: .init(for: attendee))
+    func service(_ service: DestinationService, didRequestPresentationOfStandupsListFor attendee: Attendee) -> AnyView {
+        AnyView(
+            StandupsListView(model: .init(for: attendee))
+        )
     }
 
 }

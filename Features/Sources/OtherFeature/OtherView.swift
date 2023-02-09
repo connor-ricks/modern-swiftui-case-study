@@ -27,11 +27,5 @@ public struct OtherView: View {
             }
         }
         .navigationTitle("Other")
-        .navigationDestination(
-            unwrapping: $model.destination,
-            case: /OtherModel.Destination.external
-        ) { $view in
-            view
-        }
     }
 }

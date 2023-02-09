@@ -79,7 +79,7 @@ public class StandupDetailModel<DestinationStandups: View>: ObservableObject {
     }
 
     func switchToOtherTabButtonTapped() {
-        destinationService.select(tab: .other)
+        destinationService.navigateTo(tab: .other)
     }
     
     // MARK: Helpers
