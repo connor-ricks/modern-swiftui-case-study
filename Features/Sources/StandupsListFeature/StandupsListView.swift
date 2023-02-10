@@ -4,6 +4,7 @@ import SwiftUINavigationBackport
 
 import Models
 import StandupDetailFeature
+import EditStandupFeature
 
 // MARK: - StandupsListView
 
@@ -22,44 +23,43 @@ public struct StandupsListView: View {
     // MARK: Body
     
     public var body: some View {
-        NavigationView {
-            List {
-                ForEach(model.standups) { standup in
-                    Button(action: { model.standupTapped(standup: standup) }) {
-                        CardView(standup: standup)
-                    }
-                    .listRowBackground(standup.theme.primaryColor)
+        List {
+            ForEach(model.standups) { standup in
+                Button(action: { model.standupTapped(standup: standup) }) {
+                    CardView(standup: standup)
                 }
+                .listRowBackground(standup.theme.primaryColor)
             }
-            .toolbar {
-                Button(action: { model.addStandupButtonTapped() }) {
-                    Image(systemName: "plus")
-                }
+        }
+        .toolbar {
+            Button(action: { model.addStandupButtonTapped() }) {
+                Image(systemName: "plus")
             }
-            .navigationTitle("Daily Standups")
-            .navigationDestination(
-                unwrapping: $model.destination,
-                case: /StandupsListModel.Destination.detail
-            ) { $detailModel in
-                StandupDetailView(model: detailModel)
+        }
+        .navigationTitle(navigationTitle)
+        .navigationDestination(
+            unwrapping: $model.destination,
+            case: /StandupsListModel.Destination.detail
+        ) { $detailModel in
+            StandupDetailView(model: detailModel)
+        }
+        .sheet(
+            unwrapping: $model.destination,
+            case: /StandupsListModel.Destination.add
+        ) { $model in
+            NavigationView {
+                EditStandupView(model: model)
             }
-            .sheet(
-                unwrapping: $model.destination,
-                case: /StandupsListModel.Destination.add
-            ) { $model in
-                NavigationView {
-                    EditStandupView(model: model)
-                        .navigationTitle("New standup")
-                        .toolbar {
-                            ToolbarItem(placement: .cancellationAction) {
-                                Button("Dismiss") { self.model.dismissAddStandupButtonTapped() }
-                            }
-                            ToolbarItem(placement: .confirmationAction) {
-                                Button("Add") { self.model.confirmAddStandupButtonTapped() }
-                            }
-                        }
-                }
-            }
+        }
+    }
+
+    // MARK: Helpers
+
+    var navigationTitle: String {
+        if let attendee = model.attendee {
+            return "\(attendee.name)'s Standups"
+        } else {
+            return "Daily Standups"
         }
     }
 }
@@ -68,15 +68,17 @@ public struct StandupsListView: View {
 
 struct StandupsListView_Previews: PreviewProvider {
     static var previews: some View {
-        StandupsListView(
-            model: StandupsListModel(
-                destination: .add(
-                    EditStandupModel(
-                        focus: .attendee(Standup.mock.attendees[3].id),
-                        standup: .mock
+        NavigationView {
+            StandupsListView(
+                model: StandupsListModel(
+                    destination: .add(
+                        EditStandupModel(
+                            focus: .attendee(Standup.mock.attendees[3].id),
+                            standup: .mock
+                        )
                     )
                 )
             )
-        )
+        }
     }
 }

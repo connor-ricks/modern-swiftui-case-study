@@ -1,32 +1,31 @@
 import SwiftUI
 import Models
 
-import StandupDetailFeature
+import Navigation
 import StandupsListFeature
+import OtherFeature
 
 @main
+@MainActor
 struct StandupsApp: App {
+
+    @StateObject private var model = StandupsAppModel()
+
     var body: some Scene {
         WindowGroup {
-            var standup = Standup.mock
-            let _ = standup.duration = 10
-            let _ = standup.attendees = [
-                Attendee(id: Attendee.ID(UUID()), name: "Blob")
-            ]
-            
-            StandupsListView(model: .init(
-                destination: .detail(
-                    StandupDetailModel(
-                        destination: .edit(
-                            EditStandupModel(
-                                focus: .attendee(standup.attendees[0].id),
-                                standup: standup
-                            )
-                        ),
-                        standup: standup
-                    )
-                )
-            ))
+            TabView(selection: $model.selectedTab) {
+                NavigationView {
+                    StandupsListView(model: model.standupsListModel)
+                }
+                .tabItem { Label("Standups", systemImage: "circle.fill") }
+                .tag(AppTab.standups)
+
+                NavigationView {
+                    OtherView(model: model.otherModel)
+                }
+                .tabItem { Label("Other", systemImage: "rectangle.fill") }
+                .tag(AppTab.other)
+            }
         }
     }
 }

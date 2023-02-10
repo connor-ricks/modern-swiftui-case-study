@@ -9,15 +9,18 @@ let package = Package(
     products: [
         
         // MARK: Shared
-        
+
+        .library(name: "Navigation", targets: ["Navigation"]),
         .library(name: "Models", targets: ["Models"]),
         .library(name: "SwiftUINavigationBackport", targets: ["SwiftUINavigationBackport"]),
         
         // MARK: Features
-        
+
+        .library(name: "EditStandupFeature", targets: ["EditStandupFeature"]),
         .library(name: "RecordStandupFeature", targets: ["RecordStandupFeature"]),
         .library(name: "StandupDetailFeature", targets: ["StandupDetailFeature"]),
         .library(name: "StandupsListFeature", targets: ["StandupsListFeature"]),
+        .library(name: "OtherFeature", targets: ["OtherFeature"]),
     ],
     dependencies: [
         .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "0.1.4"),
@@ -28,9 +31,14 @@ let package = Package(
     targets: [
         
         // MARK: Shared
-        
+
+        .target(name: "Navigation", dependencies: [
+            "Models"
+        ]),
+
         .target(name: "Models", dependencies: [
             .product(name: "Tagged", package: "swift-tagged"),
+            .product(name: "Dependencies", package: "swift-dependencies"),
             .product(name: "IdentifiedCollections", package: "swift-identified-collections"),
         ]),
         
@@ -39,8 +47,18 @@ let package = Package(
         ]),
         
         // MARK: Features
+
+        .target(name: "EditStandupFeature", dependencies: [
+            "Navigation",
+            "Models",
+            "SwiftUINavigationBackport",
+            .product(name: "Dependencies", package: "swift-dependencies"),
+            .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
+        ]),
+        .testTarget(name: "EditStandupFeatureTests", dependencies: ["EditStandupFeature"]),
         
         .target(name: "RecordStandupFeature", dependencies: [
+            "Navigation",
             "Models",
             "SwiftUINavigationBackport",
             .product(name: "Dependencies", package: "swift-dependencies"),
@@ -49,22 +67,34 @@ let package = Package(
         .testTarget(name: "RecordStandupFeatureTests", dependencies: ["RecordStandupFeature"]),
         
         .target(name: "StandupDetailFeature", dependencies: [
+            "Navigation",
+            "EditStandupFeature",
+            "RecordStandupFeature",
             "Models",
             "SwiftUINavigationBackport",
-            "RecordStandupFeature",
             .product(name: "Dependencies", package: "swift-dependencies"),
             .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
         ]),
         .testTarget(name: "StandupDetailFeatureTests", dependencies: ["StandupDetailFeature"]),
         
         .target(name: "StandupsListFeature", dependencies: [
+            "Navigation",
+            "EditStandupFeature",
+            "StandupDetailFeature",
             "Models",
             "SwiftUINavigationBackport",
-            "StandupDetailFeature",
             .product(name: "Dependencies", package: "swift-dependencies"),
             .product(name: "IdentifiedCollections", package: "swift-identified-collections"),
             .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
         ]),
         .testTarget(name: "StandupsListFeatureTests", dependencies: ["StandupsListFeature"]),
+
+        .target(name: "OtherFeature", dependencies: [
+            "Navigation",
+            "Models",
+            "SwiftUINavigationBackport",
+            .product(name: "Dependencies", package: "swift-dependencies"),
+            .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
+        ])
     ]
 )

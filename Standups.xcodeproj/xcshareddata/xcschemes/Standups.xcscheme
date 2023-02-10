@@ -32,10 +32,40 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CA7A284C291F5BF2003B349D"
-               BuildableName = "StandupsTests.xctest"
-               BlueprintName = "StandupsTests"
-               ReferencedContainer = "container:Standups.xcodeproj">
+               BlueprintIdentifier = "EditStandupFeatureTests"
+               BuildableName = "EditStandupFeatureTests"
+               BlueprintName = "EditStandupFeatureTests"
+               ReferencedContainer = "container:Features">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "RecordStandupFeatureTests"
+               BuildableName = "RecordStandupFeatureTests"
+               BlueprintName = "RecordStandupFeatureTests"
+               ReferencedContainer = "container:Features">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "StandupDetailFeatureTests"
+               BuildableName = "StandupDetailFeatureTests"
+               BlueprintName = "StandupDetailFeatureTests"
+               ReferencedContainer = "container:Features">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "StandupsListFeatureTests"
+               BuildableName = "StandupsListFeatureTests"
+               BlueprintName = "StandupsListFeatureTests"
+               ReferencedContainer = "container:Features">
             </BuildableReference>
          </TestableReference>
       </Testables>

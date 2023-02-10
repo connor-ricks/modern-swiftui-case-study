@@ -2,8 +2,6 @@ import SwiftUI
 
 import Models
 
-// MARK: - CardView
-
 struct CardView: View {
     
     // MARK: Properties

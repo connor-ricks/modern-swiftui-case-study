@@ -6,9 +6,9 @@ import Models
 
 // MARK: - StandupsProvider
 
-struct StandupsProvider: Sendable {
-    var load: @Sendable () throws -> IdentifiedArrayOf<Standup>
-    var save: @Sendable (IdentifiedArrayOf<Standup>) throws -> Void
+public struct StandupsProvider: Sendable {
+    public var load: @Sendable () throws -> IdentifiedArrayOf<Standup>
+    public var save: @Sendable (IdentifiedArrayOf<Standup>) throws -> Void
 }
 
 // MARK: - StandupsProvider+Dependency
@@ -31,7 +31,7 @@ extension StandupsProvider: DependencyKey {
         }()
     }
     
-    static let liveValue = StandupsProvider(
+    public static let liveValue = StandupsProvider(
         load: {
             try JSONDecoder().decode(
                 IdentifiedArray.self,

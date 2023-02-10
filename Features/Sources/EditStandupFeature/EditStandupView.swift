@@ -59,6 +59,15 @@ public struct EditStandupView: View {
                 Text("Attendees")
             })
         }
+        .navigationTitle(model.navigationTitle)
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Dismiss") { self.model.cancelEditingButtonTapped() }
+            }
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Save") { self.model.finishEditingButtonTapped() }
+            }
+        }
         .bind($model.focus, to: $focus)
     }
 }

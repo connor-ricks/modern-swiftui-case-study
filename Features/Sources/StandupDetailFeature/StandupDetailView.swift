@@ -5,6 +5,7 @@ import SwiftUINavigationBackport
 import XCTestDynamicOverlay
 
 import Models
+import EditStandupFeature
 import RecordStandupFeature
 
 // MARK: - StandupDetailView
@@ -70,7 +71,9 @@ public struct StandupDetailView: View {
             
             Section(content: {
                 ForEach(model.standup.attendees) { attendee in
-                    Label(attendee.name, systemImage: "person")
+                    Button(action: { model.pushAllStandupsButtonTapped(attendee: attendee) }) {
+                        Label(attendee.name, systemImage: "person")
+                    }
                 }
             }, header: {
                 Text("Attendees")
@@ -80,6 +83,14 @@ public struct StandupDetailView: View {
                 Button("Delete") { model.deleteButtonTapped() }
                     .foregroundColor(.red)
                     .frame(maxWidth: .infinity)
+            }
+
+            if let attendee = model.standup.attendees.randomElement() {
+                Button("Present Standups for \(attendee.name)") { model.presentAllStandupsButtonTapped(attendee: attendee) }
+            }
+
+            Section {
+                Button("Switch to Other Tab") { model.switchToOtherTabButtonTapped() }
             }
         }
         .navigationTitle(model.standup.title)
@@ -100,21 +111,26 @@ public struct StandupDetailView: View {
                 RecordStandupView(model: recordModel)
             }
         )
+        .navigationDestination(
+            unwrapping: $model.destination,
+            case: /StandupDetailModel.Destination.externalPush
+        ) { $view in
+            view
+        }
+        .sheet(
+            unwrapping: $model.destination,
+            case: /StandupDetailModel.Destination.externalPresent
+        ) { $view in
+            NavigationView {
+                view
+            }
+        }
         .sheet(
             unwrapping: $model.destination,
             case: /StandupDetailModel.Destination.edit
         ) { $editModel in
             NavigationView {
                 EditStandupView(model: editModel)
-                    .navigationTitle(model.standup.title)
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button("Cancel") { model.cancelEditButtonTapped() }
-                        }
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("Done") { model.doneEditingButtonTapped() }
-                        }
-                    }
             }
         }
     }

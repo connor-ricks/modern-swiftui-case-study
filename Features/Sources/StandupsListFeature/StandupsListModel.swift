@@ -1,22 +1,15 @@
 import SwiftUI
-import Combine
 import Dependencies
 import IdentifiedCollections
 
 import Models
 import StandupDetailFeature
+import EditStandupFeature
+
+// MARK: - StandupsListModel
 
 @MainActor
-public class StandupsListModel: ObservableObject {
-    
-    // MARK: Constants
-    
-    private enum Constants {
-        static let standupsURL: URL = {
-            let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-            return URL(string: paths[0].absoluteString + "standups.json")!
-        }()
-    }
+final public class StandupsListModel: ObservableObject {
     
     // MARK: Destination
     
@@ -30,20 +23,18 @@ public class StandupsListModel: ObservableObject {
     @Dependency(\.mainQueue) var mainQueue
     @Dependency(\.standupsProvider) var standupsProvider
     
-    @Published public internal(set) var destination: Destination? { didSet { bind() } }
-    @Published public internal(set) var standups: IdentifiedArrayOf<Standup>
-    
-    private var destinationCancellable: AnyCancellable?
-    private var standupsDidChangeCancellable: AnyCancellable?
+    let attendee: Attendee?
+    @Published var destination: Destination? { didSet { bind() } }
+    @Published private(set) var standups: IdentifiedArrayOf<Standup>
     
     // MARK: Initializers
     
-    public init(destination: Destination? = nil) {
+    public init(for attendee: Attendee? = nil, destination: Destination? = nil) {
         self.destination = destination
+        self.attendee = attendee
         self.standups = []
         
         loadStandups()
-        subscribeToStandupChanges()
         bind()
     }
     
@@ -51,22 +42,7 @@ public class StandupsListModel: ObservableObject {
     
     func addStandupButtonTapped() {
         /// `UUID` generation should be powered by a `@Dependency`.
-        destination = .add(EditStandupModel(standup: Standup(id: Standup.ID(UUID()))))
-    }
-    
-    func dismissAddStandupButtonTapped() {
-        destination = nil
-    }
-    
-    func confirmAddStandupButtonTapped() {
-        defer { destination = nil }
-        
-        guard case let .add(editStandupModel) = destination else { return }
-        var standup = editStandupModel.standup
-        
-        standup.attendees.removeAll { $0.name.allSatisfy(\.isWhitespace) }
-        
-        standups.append(standup)
+        destination = .add(EditStandupModel())
     }
     
     func standupTapped(standup: Standup) {
@@ -78,32 +54,12 @@ public class StandupsListModel: ObservableObject {
     private func bind() {
         switch self.destination {
         case let .detail(standupDetailModel):
-            standupDetailModel.onConfirmDeletion = { [weak self, id = standupDetailModel.standup.id] in
-                guard let self else { return }
-                withAnimation {
-                    self.standups.remove(id: id)
-                    self.destination = nil
-                }
-            }
-            
-            destinationCancellable = standupDetailModel.$standup
-                .sink { [weak self] standup in
-                    guard let self else { return }
-                    self.standups[id: standup.id] = standup
-                }
-            
-        case .add, .none:
+            standupDetailModel.delegate = self
+        case .add(let editStandupModel):
+            editStandupModel.delegate = self
+        case .none:
             break
         }
-    }
-    
-    private func subscribeToStandupChanges() {
-        standupsDidChangeCancellable = $standups
-            .debounce(for: .seconds(1), scheduler: mainQueue)
-            .sink { [weak self] standups in
-                guard let self else { return }
-                self.saveStandups()
-            }
     }
     
     // MARK: Persistence
@@ -118,9 +74,46 @@ public class StandupsListModel: ObservableObject {
     
     private func loadStandups() {
         do {
-            standups = try standupsProvider.load()
+            let standups = try standupsProvider.load()
+            if let attendee {
+                self.standups = standups.filter { $0.attendees.contains(where: { $0.name == attendee.name })}
+            } else {
+                self.standups = standups
+            }
+            
         } catch {
             // TODO: Handle Errors!
+        }
+    }
+}
+
+// MARK: - StandupsListModel+EditStandupModelDelegate
+
+extension StandupsListModel: EditStandupModelDelegate {
+    public func editStandupModel(_ model: EditStandupModel, didCancelEditing standup: Standup) {
+        destination = nil
+    }
+
+    public func editStandupModel(_ model: EditStandupModel, didFinishEditing standup: Standup) {
+        standups.append(standup)
+        saveStandups()
+        destination = nil
+    }
+}
+
+// MARK: - StandupListModel+StandupDetailModelDelegate
+
+extension StandupsListModel: StandupDetailModelDelegate {
+    public func standupDetailModel(_ model: StandupDetailModel, didFinishEditing standup: Standup) {
+        standups[id: standup.id] = standup
+        saveStandups()
+    }
+
+    public func standupDetailModel(_ model: StandupDetailModel, didRequestDeletionOf standup: Standup) {
+        withAnimation {
+            standups.remove(id: standup.id)
+            saveStandups()
+            destination = nil
         }
     }
 }
