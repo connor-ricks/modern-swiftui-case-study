@@ -10,6 +10,7 @@ let package = Package(
         
         // MARK: Shared
 
+        .library(name: "Navigation", targets: ["Navigation"]),
         .library(name: "Models", targets: ["Models"]),
         .library(name: "SwiftUINavigationBackport", targets: ["SwiftUINavigationBackport"]),
         
@@ -31,6 +32,10 @@ let package = Package(
         
         // MARK: Shared
 
+        .target(name: "Navigation", dependencies: [
+            "Models"
+        ]),
+
         .target(name: "Models", dependencies: [
             .product(name: "Tagged", package: "swift-tagged"),
             .product(name: "Dependencies", package: "swift-dependencies"),
@@ -44,6 +49,7 @@ let package = Package(
         // MARK: Features
 
         .target(name: "EditStandupFeature", dependencies: [
+            "Navigation",
             "Models",
             "SwiftUINavigationBackport",
             .product(name: "Dependencies", package: "swift-dependencies"),
@@ -52,6 +58,7 @@ let package = Package(
         .testTarget(name: "EditStandupFeatureTests", dependencies: ["EditStandupFeature"]),
         
         .target(name: "RecordStandupFeature", dependencies: [
+            "Navigation",
             "Models",
             "SwiftUINavigationBackport",
             .product(name: "Dependencies", package: "swift-dependencies"),
@@ -60,6 +67,7 @@ let package = Package(
         .testTarget(name: "RecordStandupFeatureTests", dependencies: ["RecordStandupFeature"]),
         
         .target(name: "StandupDetailFeature", dependencies: [
+            "Navigation",
             "EditStandupFeature",
             "RecordStandupFeature",
             "Models",
@@ -70,6 +78,7 @@ let package = Package(
         .testTarget(name: "StandupDetailFeatureTests", dependencies: ["StandupDetailFeature"]),
         
         .target(name: "StandupsListFeature", dependencies: [
+            "Navigation",
             "EditStandupFeature",
             "StandupDetailFeature",
             "Models",
@@ -81,6 +90,7 @@ let package = Package(
         .testTarget(name: "StandupsListFeatureTests", dependencies: ["StandupsListFeature"]),
 
         .target(name: "OtherFeature", dependencies: [
+            "Navigation",
             "Models",
             "SwiftUINavigationBackport",
             .product(name: "Dependencies", package: "swift-dependencies"),

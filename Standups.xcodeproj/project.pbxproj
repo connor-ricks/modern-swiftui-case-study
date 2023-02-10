@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		95318B75298827B90010090A /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 95318B74298827B90010090A /* Models */; };
 		95318B79298828140010090A /* StandupsListFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 95318B78298828140010090A /* StandupsListFeature */; };
+		95C3A1C62996D04B008CA81D /* Navigation in Frameworks */ = {isa = PBXBuildFile; productRef = 95C3A1C52996D04B008CA81D /* Navigation */; };
 		95C9609529949FB40092A978 /* StandupsAppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C9609429949FB40092A978 /* StandupsAppModel.swift */; };
 		95C960972994A7100092A978 /* OtherFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 95C960962994A7100092A978 /* OtherFeature */; };
 		CA7A2841291F5BF0003B349D /* StandupsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7A2840291F5BF0003B349D /* StandupsApp.swift */; };
@@ -32,6 +33,7 @@
 			files = (
 				95318B75298827B90010090A /* Models in Frameworks */,
 				95318B79298828140010090A /* StandupsListFeature in Frameworks */,
+				95C3A1C62996D04B008CA81D /* Navigation in Frameworks */,
 				95C960972994A7100092A978 /* OtherFeature in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -96,6 +98,7 @@
 				95318B74298827B90010090A /* Models */,
 				95318B78298828140010090A /* StandupsListFeature */,
 				95C960962994A7100092A978 /* OtherFeature */,
+				95C3A1C52996D04B008CA81D /* Navigation */,
 			);
 			productName = Standups;
 			productReference = CA7A283D291F5BF0003B349D /* Standups.app */;
@@ -429,6 +432,10 @@
 		95318B78298828140010090A /* StandupsListFeature */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = StandupsListFeature;
+		};
+		95C3A1C52996D04B008CA81D /* Navigation */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Navigation;
 		};
 		95C960962994A7100092A978 /* OtherFeature */ = {
 			isa = XCSwiftPackageProductDependency;

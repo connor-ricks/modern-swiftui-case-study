@@ -9,6 +9,7 @@ import SwiftUI
 import Dependencies
 
 import Models
+import Navigation
 import OtherFeature
 import EditStandupFeature
 import StandupDetailFeature
@@ -61,7 +62,7 @@ extension StandupsAppModel: DestinationServiceDelegate {
         selectedTab = tab
     }
 
-    func service(_ service: Models.DestinationService, requestedDeepLinkingTo deeplink: Models.DeepLinkableFeature) {
+    func service(_ service: DestinationService, requestedDeepLinkingTo deeplink: DeepLinkableFeature) {
         switch deeplink {
         case .createNewStandup:
             selectedTab = .standups
@@ -73,7 +74,7 @@ extension StandupsAppModel: DestinationServiceDelegate {
         }
     }
 
-    func service(_ service: Models.DestinationService, requestedInjectableFeature feature: Models.InjectableFeature) -> AnyView {
+    func service(_ service: DestinationService, requestedInjectableFeature feature: InjectableFeature) -> AnyView {
         switch feature {
         case .standups(let attendee):
             return AnyView(StandupsListView(model: StandupsListModel(for: attendee)))

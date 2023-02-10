@@ -1,6 +1,7 @@
 import SwiftUI
 import Models
 
+import Navigation
 import StandupsListFeature
 import OtherFeature
 
