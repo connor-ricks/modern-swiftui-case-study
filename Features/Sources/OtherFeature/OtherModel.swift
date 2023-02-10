@@ -17,6 +17,6 @@ public class OtherModel: ObservableObject {
     // MARK: Actions
 
     func createNewStandupButtonTapped() {
-        destinationService.navigateToCreateStandup()
+        destinationService.deepLink(to: .createNewStandup)
     }
 }

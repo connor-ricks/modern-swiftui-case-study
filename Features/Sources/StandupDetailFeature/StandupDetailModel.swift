@@ -71,17 +71,17 @@ public class StandupDetailModel: ObservableObject {
     }
     
     func pushAllStandupsButtonTapped(attendee: Attendee) {
-        let view = destinationService.standupsListView(for: attendee)
+        let view = destinationService.inject(feature: .standups(attendee: attendee))
         destination = .externalPush(view)
     }
 
     func presentAllStandupsButtonTapped(attendee: Attendee) {
-        let view = destinationService.standupsListView(for: attendee)
+        let view = destinationService.inject(feature: .standups(attendee: attendee))
         destination = .externalPresent(view)
     }
 
     func switchToOtherTabButtonTapped() {
-        destinationService.navigateTo(tab: .other)
+        destinationService.switchTo(tab: .other)
     }
     
     // MARK: Helpers

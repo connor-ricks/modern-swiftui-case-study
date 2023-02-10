@@ -57,23 +57,26 @@ class StandupsAppModel: ObservableObject {
 // MARK: - StandupsAppModel+DestinationService
 
 extension StandupsAppModel: DestinationServiceDelegate {
-    func service(_ service: DestinationService, didRequestNavigationTo tab: AppTab) {
+    func service(_ service: DestinationService, requestedSwitchingTo tab: AppTab) {
         selectedTab = tab
     }
 
-    func service(_ service: DestinationService, didRequestNavigationToEditStandupFor standup: Standup?) {
-        selectedTab = .standups
-        standupsListModel = .init(
-            destination: .add(
-                EditStandupModel(standup: standup)
+    func service(_ service: Models.DestinationService, requestedDeepLinkingTo deeplink: Models.DeepLinkableFeature) {
+        switch deeplink {
+        case .createNewStandup:
+            selectedTab = .standups
+            standupsListModel = StandupsListModel(
+                destination: .add(
+                    EditStandupModel()
+                )
             )
-        )
+        }
     }
 
-    func service(_ service: DestinationService, didRequestPresentationOfStandupsListFor attendee: Attendee) -> AnyView {
-        AnyView(
-            StandupsListView(model: .init(for: attendee))
-        )
+    func service(_ service: Models.DestinationService, requestedInjectableFeature feature: Models.InjectableFeature) -> AnyView {
+        switch feature {
+        case .standups(let attendee):
+            return AnyView(StandupsListView(model: StandupsListModel(for: attendee)))
+        }
     }
-
 }

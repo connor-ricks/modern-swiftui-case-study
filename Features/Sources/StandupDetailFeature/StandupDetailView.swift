@@ -85,8 +85,8 @@ public struct StandupDetailView: View {
                     .frame(maxWidth: .infinity)
             }
 
-            if let attendee = model.standup.attendees.first {
-                Button("Preent Standups for \(attendee.name)") { model.presentAllStandupsButtonTapped(attendee: attendee) }
+            if let attendee = model.standup.attendees.randomElement() {
+                Button("Present Standups for \(attendee.name)") { model.presentAllStandupsButtonTapped(attendee: attendee) }
             }
 
             Section {
