@@ -5,6 +5,15 @@ import Dependencies
 
 import Models
 
+// MARK: - RecordStandupModelDelegate
+
+public protocol RecordStandupModelDelegate: AnyObject {
+    func recordStandupModel(_ model: RecordStandupModel, didCancelMeetingWith transcript: String)
+    func recordStandupModel(_ model: RecordStandupModel, didFinishMeetingWith transcript: String)
+}
+
+// MARK: - RecordStandupModel
+
 @MainActor
 public class RecordStandupModel: ObservableObject {
     
@@ -26,14 +35,15 @@ public class RecordStandupModel: ObservableObject {
     @Dependency(\.speechClient) var speechClient
     
     @Published var destination: Destination?
-    @Published var dismiss = false
-    @Published var secondsElapsed = 0
-    @Published var speakerIndex = 0
+    @Published private(set) var dismiss = false
+    @Published private(set) var secondsElapsed = 0
+    @Published private(set) var speakerIndex = 0
     
     let standup: Standup
     
     private var transcript = ""
-    public var onMeetingFinished: (String) -> Void = unimplemented("RecordStandupModel.onMeetingFinished")
+
+    public weak var delegate: RecordStandupModelDelegate?
     
     var durationRemaining: TimeInterval {
         self.standup.duration - TimeInterval(secondsElapsed)
@@ -93,10 +103,11 @@ public class RecordStandupModel: ObservableObject {
     func alertButtonTapped(_ action: AlertAction) {
         switch action {
         case .confirmSave:
-            onMeetingFinished(transcript)
+            delegate?.recordStandupModel(self, didFinishMeetingWith: transcript)
             dismiss = true
-            
+
         case .confirmDiscard:
+            delegate?.recordStandupModel(self, didCancelMeetingWith: transcript)
             dismiss = true
         }
     }
@@ -134,11 +145,11 @@ public class RecordStandupModel: ObservableObject {
     private func startTimer() async throws {
         while !dismiss {
             try? await Task.sleep(nanoseconds: 1_000_000_000) // Should be an injectable dependency.
+            guard destination == nil else { continue } // Pause while alert is up.
             secondsElapsed += 1
-            
             if secondsElapsed.isMultiple(of: Int(standup.durationPerAttendee)) {
                 if speakerIndex == standup.attendees.count - 1 {
-                    onMeetingFinished(transcript)
+                    delegate?.recordStandupModel(self, didFinishMeetingWith: transcript)
                     dismiss = true
                     break
                 }

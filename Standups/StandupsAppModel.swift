@@ -10,6 +10,7 @@ import Dependencies
 
 import Models
 import OtherFeature
+import EditStandupFeature
 import StandupDetailFeature
 import StandupsListFeature
 
@@ -60,7 +61,7 @@ extension StandupsAppModel: DestinationServiceDelegate {
         selectedTab = tab
     }
 
-    func service(_ service: DestinationService, didRequestNavigationToEditStandupFor standup: Standup) {
+    func service(_ service: DestinationService, didRequestNavigationToEditStandupFor standup: Standup?) {
         selectedTab = .standups
         standupsListModel = .init(
             destination: .add(

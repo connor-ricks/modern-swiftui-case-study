@@ -4,6 +4,7 @@ import SwiftUINavigationBackport
 
 import Models
 import StandupDetailFeature
+import EditStandupFeature
 
 // MARK: - StandupsListView
 
@@ -48,15 +49,6 @@ public struct StandupsListView: View {
         ) { $model in
             NavigationView {
                 EditStandupView(model: model)
-                    .navigationTitle("New standup")
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button("Dismiss") { self.model.dismissAddStandupButtonTapped() }
-                        }
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("Add") { self.model.confirmAddStandupButtonTapped() }
-                        }
-                    }
             }
         }
     }

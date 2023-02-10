@@ -5,19 +5,20 @@ import SwiftUINavigationBackport
 import XCTestDynamicOverlay
 
 import Models
+import EditStandupFeature
 import RecordStandupFeature
 
 // MARK: - StandupDetailView
 
-public struct StandupDetailView<DestinationStandups: View>: View {
+public struct StandupDetailView: View {
     
     // MARK: Properties
     
-    @ObservedObject private var model: StandupDetailModel<DestinationStandups>
+    @ObservedObject private var model: StandupDetailModel
     
     // MARK: Initializers
     
-    public init(model: StandupDetailModel<DestinationStandups>) {
+    public init(model: StandupDetailModel) {
         self.model = model
     }
     
@@ -130,15 +131,6 @@ public struct StandupDetailView<DestinationStandups: View>: View {
         ) { $editModel in
             NavigationView {
                 EditStandupView(model: editModel)
-                    .navigationTitle(model.standup.title)
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button("Cancel") { model.cancelEditButtonTapped() }
-                        }
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("Done") { model.doneEditingButtonTapped() }
-                        }
-                    }
             }
         }
     }
@@ -154,7 +146,7 @@ struct StandupDetailView_Previews: PreviewProvider {
             let _ = standup.attendees = [
                 Attendee(id: Attendee.ID(UUID()), name: "Blob")
             ]
-            StandupDetailView<EmptyView>(
+            StandupDetailView(
                 model: StandupDetailModel(
                     destination: .record(RecordStandupModel(standup: standup)),
                     standup: standup

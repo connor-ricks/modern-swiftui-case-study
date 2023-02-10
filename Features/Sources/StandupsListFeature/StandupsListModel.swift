@@ -1,10 +1,12 @@
 import SwiftUI
-import Combine
 import Dependencies
 import IdentifiedCollections
 
 import Models
 import StandupDetailFeature
+import EditStandupFeature
+
+// MARK: - StandupsListModel
 
 @MainActor
 final public class StandupsListModel: ObservableObject {
@@ -13,7 +15,7 @@ final public class StandupsListModel: ObservableObject {
     
     public enum Destination {
         case add(EditStandupModel)
-        case detail(StandupDetailModel<StandupsListView>)
+        case detail(StandupDetailModel)
     }
     
     // MARK: Properties
@@ -22,10 +24,8 @@ final public class StandupsListModel: ObservableObject {
     @Dependency(\.standupsProvider) var standupsProvider
     
     let attendee: Attendee?
-    @Published public internal(set) var destination: Destination? { didSet { bind() } }
-    @Published public internal(set) var standups: IdentifiedArrayOf<Standup>
-
-    private var standupsDidChangeCancellable: AnyCancellable?
+    @Published var destination: Destination? { didSet { bind() } }
+    @Published private(set) var standups: IdentifiedArrayOf<Standup>
     
     // MARK: Initializers
     
@@ -35,7 +35,6 @@ final public class StandupsListModel: ObservableObject {
         self.standups = []
         
         loadStandups()
-        subscribeToStandupChanges()
         bind()
     }
     
@@ -43,22 +42,7 @@ final public class StandupsListModel: ObservableObject {
     
     func addStandupButtonTapped() {
         /// `UUID` generation should be powered by a `@Dependency`.
-        destination = .add(EditStandupModel(standup: Standup(id: Standup.ID(UUID()))))
-    }
-    
-    func dismissAddStandupButtonTapped() {
-        destination = nil
-    }
-    
-    func confirmAddStandupButtonTapped() {
-        defer { destination = nil }
-        
-        guard case let .add(editStandupModel) = destination else { return }
-        var standup = editStandupModel.standup
-        
-        standup.attendees.removeAll { $0.name.allSatisfy(\.isWhitespace) }
-        
-        standups.append(standup)
+        destination = .add(EditStandupModel())
     }
     
     func standupTapped(standup: Standup) {
@@ -70,28 +54,12 @@ final public class StandupsListModel: ObservableObject {
     private func bind() {
         switch self.destination {
         case let .detail(standupDetailModel):
-            standupDetailModel.onDelete = { [weak self] standup in
-                withAnimation {
-                    self?.standups.remove(id: standup.id)
-                    self?.destination = nil
-                }
-            }
-
-            standupDetailModel.onSave = { [weak self] standup in
-                self?.standups[id: standup.id] = standup
-            }
-        case .add, .none:
+            standupDetailModel.delegate = self
+        case .add(let editStandupModel):
+            editStandupModel.delegate = self
+        case .none:
             break
         }
-    }
-    
-    private func subscribeToStandupChanges() {
-        standupsDidChangeCancellable = $standups
-            .debounce(for: .seconds(1), scheduler: mainQueue)
-            .sink { [weak self] standups in
-                guard let self else { return }
-                self.saveStandups()
-            }
     }
     
     // MARK: Persistence
@@ -115,6 +83,37 @@ final public class StandupsListModel: ObservableObject {
             
         } catch {
             // TODO: Handle Errors!
+        }
+    }
+}
+
+// MARK: - StandupsListModel+EditStandupModelDelegate
+
+extension StandupsListModel: EditStandupModelDelegate {
+    public func editStandupModel(_ model: EditStandupModel, didCancelEditing standup: Standup) {
+        destination = nil
+    }
+
+    public func editStandupModel(_ model: EditStandupModel, didFinishEditing standup: Standup) {
+        standups.append(standup)
+        saveStandups()
+        destination = nil
+    }
+}
+
+// MARK: - StandupListModel+StandupDetailModelDelegate
+
+extension StandupsListModel: StandupDetailModelDelegate {
+    public func standupDetailModel(_ model: StandupDetailModel, didFinishEditing standup: Standup) {
+        standups[id: standup.id] = standup
+        saveStandups()
+    }
+
+    public func standupDetailModel(_ model: StandupDetailModel, didRequestDeletionOf standup: Standup) {
+        withAnimation {
+            standups.remove(id: standup.id)
+            saveStandups()
+            destination = nil
         }
     }
 }

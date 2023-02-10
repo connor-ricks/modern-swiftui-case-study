@@ -1,21 +1,35 @@
 import SwiftUI
+import XCTestDynamicOverlay
 
 import Models
+
+// MARK: - EditStandupModelDelegate
+
+public protocol EditStandupModelDelegate: AnyObject {
+    func editStandupModel(_ model: EditStandupModel, didCancelEditing standup: Standup)
+    func editStandupModel(_ model: EditStandupModel, didFinishEditing standup: Standup)
+}
+
+// MARK: - EditStandupModel
 
 public class EditStandupModel: ObservableObject {
     
     // MARK: Properties
-    
-    @Published public var focus: EditStandupView.Field?
-    @Published public var standup: Standup
+
+    let navigationTitle: String
+    @Published var focus: EditStandupView.Field?
+    @Published var standup: Standup
+
+    public weak var delegate: EditStandupModelDelegate?
     
     // MARK: Initializers
     
-    public init(focus: EditStandupView.Field? = .title, standup: Standup) {
+    public init(focus: EditStandupView.Field? = .title, standup: Standup? = nil) {
+        self.navigationTitle = standup?.title ?? "New Standup"
         self.focus = focus
-        self.standup = standup
+        self.standup = standup ?? .init(id: .init(UUID()))
         
-        if standup.attendees.isEmpty {
+        if self.standup.attendees.isEmpty {
             /// `UUID` generation should be powered by a `@Dependency`.
             self.standup.attendees.append(Attendee(id: Attendee.ID(UUID()), name: ""))
         }
@@ -39,5 +53,14 @@ public class EditStandupModel: ObservableObject {
         let attendee = Attendee(id: Attendee.ID(UUID()), name: "")
         standup.attendees.append(attendee)
         focus = .attendee(attendee.id)
+    }
+
+    func cancelEditingButtonTapped() {
+        delegate?.editStandupModel(self, didCancelEditing: standup)
+    }
+
+    func finishEditingButtonTapped() {
+        standup.attendees = standup.attendees.filter { !$0.name.allSatisfy(\.isWhitespace) }
+        delegate?.editStandupModel(self, didFinishEditing: standup)
     }
 }

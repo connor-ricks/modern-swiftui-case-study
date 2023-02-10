@@ -1,10 +1,11 @@
+import XCTest
 import CustomDump
 import Dependencies
-import XCTest
 
 import Models
 @testable import StandupsListFeature
 @testable import StandupDetailFeature
+@testable import EditStandupFeature
 
 @MainActor
 class StandupsListTests: XCTestCase {
@@ -23,35 +24,38 @@ class StandupsListTests: XCTestCase {
                 XCTFail()
                 return
             }
-            
+
             editModel.standup.attendees = [
                 .init(id: .init(UUID()), name: "John"),
                 .init(id: .init(UUID()), name: "\t    ")
             ]
-            
-            listModel.confirmAddStandupButtonTapped()
+
+            editModel.finishEditingButtonTapped()
             XCTAssertEqual(listModel.standups.count, 1)
             XCTAssertEqual(listModel.standups[0].attendees.count, 1)
             XCTAssertEqual(listModel.standups[0].attendees[0].name, "John")
         }
     }
     
-    func testPersistence() throws {
+    func testPersistence() async throws {
         let mainQueue = DispatchQueue.test
         
-        withDependencies {
+        await withDependencies {
             $0.standupsProvider = .mock()
             $0.mainQueue = mainQueue.eraseToAnyScheduler()
         } operation: {
             let listModel = StandupsListModel()
             XCTAssertEqual(listModel.standups.count, 0)
-            
+
             listModel.addStandupButtonTapped()
-            listModel.confirmAddStandupButtonTapped()
-            XCTAssertEqual(listModel.standups.count, 1)
-            
-            mainQueue.run()
-            
+            guard case let .add(editModel) = listModel.destination else {
+                XCTFail()
+                return
+            }
+
+            editModel.finishEditingButtonTapped()
+            try? await Task.sleep(nanoseconds: 10000)
+
             let nextLaunchListModel = StandupsListModel()
             XCTAssertEqual(nextLaunchListModel.standups.count, 1)
         }
@@ -84,7 +88,7 @@ class StandupsListTests: XCTestCase {
             XCTAssertNoDifference(editModel.standup, detailModel.standup)
             
             editModel.standup.title = "Product"
-            detailModel.doneEditingButtonTapped()
+            detailModel.editStandupModel(editModel, didFinishEditing: editModel.standup)
             
             XCTAssertNil(detailModel.destination)
             XCTAssertEqual(detailModel.standup.title, "Product")

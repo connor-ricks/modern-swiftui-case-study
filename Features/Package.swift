@@ -14,7 +14,8 @@ let package = Package(
         .library(name: "SwiftUINavigationBackport", targets: ["SwiftUINavigationBackport"]),
         
         // MARK: Features
-        
+
+        .library(name: "EditStandupFeature", targets: ["EditStandupFeature"]),
         .library(name: "RecordStandupFeature", targets: ["RecordStandupFeature"]),
         .library(name: "StandupDetailFeature", targets: ["StandupDetailFeature"]),
         .library(name: "StandupsListFeature", targets: ["StandupsListFeature"]),
@@ -41,6 +42,14 @@ let package = Package(
         ]),
         
         // MARK: Features
+
+        .target(name: "EditStandupFeature", dependencies: [
+            "Models",
+            "SwiftUINavigationBackport",
+            .product(name: "Dependencies", package: "swift-dependencies"),
+            .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
+        ]),
+        .testTarget(name: "EditStandupFeatureTests", dependencies: ["EditStandupFeature"]),
         
         .target(name: "RecordStandupFeature", dependencies: [
             "Models",
@@ -51,18 +60,20 @@ let package = Package(
         .testTarget(name: "RecordStandupFeatureTests", dependencies: ["RecordStandupFeature"]),
         
         .target(name: "StandupDetailFeature", dependencies: [
+            "EditStandupFeature",
+            "RecordStandupFeature",
             "Models",
             "SwiftUINavigationBackport",
-            "RecordStandupFeature",
             .product(name: "Dependencies", package: "swift-dependencies"),
             .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
         ]),
         .testTarget(name: "StandupDetailFeatureTests", dependencies: ["StandupDetailFeature"]),
         
         .target(name: "StandupsListFeature", dependencies: [
+            "EditStandupFeature",
+            "StandupDetailFeature",
             "Models",
             "SwiftUINavigationBackport",
-            "StandupDetailFeature",
             .product(name: "Dependencies", package: "swift-dependencies"),
             .product(name: "IdentifiedCollections", package: "swift-identified-collections"),
             .product(name: "SwiftUINavigation", package: "swiftui-navigation"),

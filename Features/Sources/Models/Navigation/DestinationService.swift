@@ -5,7 +5,7 @@ import Dependencies
 
 @MainActor public protocol DestinationServiceDelegate: AnyObject {
     func service(_ service: DestinationService, didRequestNavigationTo tab: AppTab)
-    func service(_ service: DestinationService, didRequestNavigationToEditStandupFor standup: Standup)
+    func service(_ service: DestinationService, didRequestNavigationToEditStandupFor standup: Standup?)
     func service(_ service: DestinationService, didRequestPresentationOfStandupsListFor attendee: Attendee) -> AnyView
 }
 
@@ -25,7 +25,7 @@ public class DestinationService {
     }
 
     public func navigateToCreateStandup() {
-        delegate?.service(self, didRequestNavigationToEditStandupFor: .init(id: .init(UUID())))
+        delegate?.service(self, didRequestNavigationToEditStandupFor: nil)
     }
 
     public func standupsListView(for attendee: Attendee) -> AnyView {
