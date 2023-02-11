@@ -3,16 +3,21 @@
 
 import PackageDescription
 
+let sharedDependencies: [Target.Dependency] = [
+    .product(name: "Dependencies", package: "swift-dependencies"),
+    .product(name: "IdentifiedCollections", package: "swift-identified-collections"),
+    .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
+    .product(name: "Tagged", package: "swift-tagged"),
+]
+
 let package = Package(
     name: "Features",
-    platforms: [.iOS(.v15)],
+    platforms: [.iOS(.v16)],
     products: [
         
         // MARK: Shared
 
-        .library(name: "Navigation", targets: ["Navigation"]),
         .library(name: "Models", targets: ["Models"]),
-        .library(name: "SwiftUINavigationBackport", targets: ["SwiftUINavigationBackport"]),
         
         // MARK: Features
 
@@ -20,7 +25,6 @@ let package = Package(
         .library(name: "RecordStandupFeature", targets: ["RecordStandupFeature"]),
         .library(name: "StandupDetailFeature", targets: ["StandupDetailFeature"]),
         .library(name: "StandupsListFeature", targets: ["StandupsListFeature"]),
-        .library(name: "OtherFeature", targets: ["OtherFeature"]),
     ],
     dependencies: [
         .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "0.1.4"),
@@ -32,69 +36,20 @@ let package = Package(
         
         // MARK: Shared
 
-        .target(name: "Navigation", dependencies: [
-            "Models"
-        ]),
-
-        .target(name: "Models", dependencies: [
-            .product(name: "Tagged", package: "swift-tagged"),
-            .product(name: "Dependencies", package: "swift-dependencies"),
-            .product(name: "IdentifiedCollections", package: "swift-identified-collections"),
-        ]),
-        
-        .target(name: "SwiftUINavigationBackport", dependencies: [
-            .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
-        ]),
+        .target(name: "Models", dependencies: [] + sharedDependencies, resources: [.process("Colors.xcassets")]),
         
         // MARK: Features
 
-        .target(name: "EditStandupFeature", dependencies: [
-            "Navigation",
-            "Models",
-            "SwiftUINavigationBackport",
-            .product(name: "Dependencies", package: "swift-dependencies"),
-            .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
-        ]),
+        .target(name: "EditStandupFeature", dependencies: ["Models"] + sharedDependencies),
         .testTarget(name: "EditStandupFeatureTests", dependencies: ["EditStandupFeature"]),
         
-        .target(name: "RecordStandupFeature", dependencies: [
-            "Navigation",
-            "Models",
-            "SwiftUINavigationBackport",
-            .product(name: "Dependencies", package: "swift-dependencies"),
-            .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
-        ]),
+        .target(name: "RecordStandupFeature", dependencies: ["Models"] + sharedDependencies),
         .testTarget(name: "RecordStandupFeatureTests", dependencies: ["RecordStandupFeature"]),
         
-        .target(name: "StandupDetailFeature", dependencies: [
-            "Navigation",
-            "EditStandupFeature",
-            "RecordStandupFeature",
-            "Models",
-            "SwiftUINavigationBackport",
-            .product(name: "Dependencies", package: "swift-dependencies"),
-            .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
-        ]),
+        .target(name: "StandupDetailFeature", dependencies: ["Models"] + sharedDependencies),
         .testTarget(name: "StandupDetailFeatureTests", dependencies: ["StandupDetailFeature"]),
         
-        .target(name: "StandupsListFeature", dependencies: [
-            "Navigation",
-            "EditStandupFeature",
-            "StandupDetailFeature",
-            "Models",
-            "SwiftUINavigationBackport",
-            .product(name: "Dependencies", package: "swift-dependencies"),
-            .product(name: "IdentifiedCollections", package: "swift-identified-collections"),
-            .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
-        ]),
+        .target(name: "StandupsListFeature", dependencies: ["Models"] + sharedDependencies),
         .testTarget(name: "StandupsListFeatureTests", dependencies: ["StandupsListFeature"]),
-
-        .target(name: "OtherFeature", dependencies: [
-            "Navigation",
-            "Models",
-            "SwiftUINavigationBackport",
-            .product(name: "Dependencies", package: "swift-dependencies"),
-            .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
-        ])
     ]
 )

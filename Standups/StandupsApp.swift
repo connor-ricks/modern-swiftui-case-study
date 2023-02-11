@@ -1,30 +1,46 @@
 import SwiftUI
-import Models
+import SwiftUINavigation
+import Dependencies
 
-import Navigation
+import Models
 import StandupsListFeature
-import OtherFeature
+import StandupDetailFeature
+import EditStandupFeature
+import RecordStandupFeature
+
 
 @main
 @MainActor
 struct StandupsApp: App {
 
-    @StateObject private var model = StandupsAppModel()
+    @StateObject private var model = StandupsAppModel(
+        path: [],
+        standupsListModel: StandupsListModel()
+    )
 
     var body: some Scene {
         WindowGroup {
-            TabView(selection: $model.selectedTab) {
-                NavigationView {
-                    StandupsListView(model: model.standupsListModel)
+            NavigationStack(path: self.$model.path) {
+                StandupsListView(model: model.standupsListModel)
+                    .navigationDestination(for: RootPath.self) { path in
+                        switch path {
+                        case let .detail(standupDetailModel):
+                            StandupDetailView(model: standupDetailModel)
+                        case let .meeting(meeting, standup):
+                            MeetingView(meeting: meeting, standup: standup)
+                        case let .record(recordStandupModel):
+                            RecordStandupView(model: recordStandupModel)
+                        }
+                    }
+            }
+            .sheet(unwrapping: $model.destination) { $destination in
+                switch destination {
+                case .add(let model),
+                     .edit(let model):
+                    NavigationStack {
+                        EditStandupView(model: model)
+                    }
                 }
-                .tabItem { Label("Standups", systemImage: "circle.fill") }
-                .tag(AppTab.standups)
-
-                NavigationView {
-                    OtherView(model: model.otherModel)
-                }
-                .tabItem { Label("Other", systemImage: "rectangle.fill") }
-                .tag(AppTab.other)
             }
         }
     }

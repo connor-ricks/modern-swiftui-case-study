@@ -1,12 +1,9 @@
-import Dependencies
 import SwiftUI
 import SwiftUINavigation
-import SwiftUINavigationBackport
 import XCTestDynamicOverlay
+import Dependencies
 
 import Models
-import EditStandupFeature
-import RecordStandupFeature
 
 // MARK: - StandupDetailView
 
@@ -26,7 +23,7 @@ public struct StandupDetailView: View {
     
     public var body: some View {
         List {
-            Section(content: {
+            Section("Standup Info") {
                 Button(action: { model.startMeetingButtonTapped() }) {
                     Label("Start Meeting", systemImage: "timer")
                         .font(.headline)
@@ -48,13 +45,11 @@ public struct StandupDetailView: View {
                         .background(model.standup.theme.primaryColor)
                         .cornerRadius(4)
                 }
-            }, header: {
-                Text("Standup Info")
-            })
+            }
             
-            Section(content: {
+            Section("Past Meetings") {
                 ForEach(model.standup.meetings) { meeting in
-                    Button(action: { model.meetingTapping(meeting) }) {
+                    Button(action: { model.meetingTapped(meeting) }) {
                         HStack {
                             Image(systemName: "calendar")
                             Text(meeting.date, style: .date)
@@ -65,73 +60,23 @@ public struct StandupDetailView: View {
                 .onDelete { indices in
                     model.deleteMeetings(atOffsets: indices)
                 }
-            }, header: {
-                Text("Past meetings")
-            })
+            }
             
-            Section(content: {
+            Section("Attendees") {
                 ForEach(model.standup.attendees) { attendee in
-                    Button(action: { model.pushAllStandupsButtonTapped(attendee: attendee) }) {
-                        Label(attendee.name, systemImage: "person")
-                    }
+                    Label(attendee.name, systemImage: "person")
                 }
-            }, header: {
-                Text("Attendees")
-            })
+            }
             
             Section {
                 Button("Delete") { model.deleteButtonTapped() }
                     .foregroundColor(.red)
                     .frame(maxWidth: .infinity)
             }
-
-            if let attendee = model.standup.attendees.randomElement() {
-                Button("Present Standups for \(attendee.name)") { model.presentAllStandupsButtonTapped(attendee: attendee) }
-            }
-
-            Section {
-                Button("Switch to Other Tab") { model.switchToOtherTabButtonTapped() }
-            }
         }
         .navigationTitle(model.standup.title)
         .toolbar {
             Button("Edit") { model.editButtonTapped() }
-        }
-        .navigationDestination(
-            unwrapping: $model.destination,
-            case: /StandupDetailModel.Destination.meeting,
-            destination: { $meeting in
-                MeetingView(meeting: meeting, standup: model.standup)
-            }
-        )
-        .navigationDestination(
-            unwrapping: $model.destination,
-            case: /StandupDetailModel.Destination.record,
-            destination: { $recordModel in
-                RecordStandupView(model: recordModel)
-            }
-        )
-        .navigationDestination(
-            unwrapping: $model.destination,
-            case: /StandupDetailModel.Destination.externalPush
-        ) { $view in
-            view
-        }
-        .sheet(
-            unwrapping: $model.destination,
-            case: /StandupDetailModel.Destination.externalPresent
-        ) { $view in
-            NavigationView {
-                view
-            }
-        }
-        .sheet(
-            unwrapping: $model.destination,
-            case: /StandupDetailModel.Destination.edit
-        ) { $editModel in
-            NavigationView {
-                EditStandupView(model: editModel)
-            }
         }
     }
 }
@@ -140,17 +85,15 @@ public struct StandupDetailView: View {
 
 struct StandupDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
+        NavigationStack {
             var standup = Standup.mock
             let _ = standup.duration = 60
             let _ = standup.attendees = [
                 Attendee(id: Attendee.ID(UUID()), name: "Blob")
             ]
+
             StandupDetailView(
-                model: StandupDetailModel(
-                    destination: .record(RecordStandupModel(standup: standup)),
-                    standup: standup
-                )
+                model: StandupDetailModel(standup: standup)
             )
         }
     }

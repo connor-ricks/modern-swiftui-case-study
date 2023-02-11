@@ -1,7 +1,7 @@
 import Foundation
 import Tagged
 
-public struct Attendee: Equatable, Identifiable, Codable {
+public struct Attendee: Hashable, Identifiable, Codable {
     public let id: Tagged<Self, UUID>
     public var name: String
     

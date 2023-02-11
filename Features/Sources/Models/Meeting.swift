@@ -1,7 +1,7 @@
 import Foundation
 import Tagged
 
-public struct Meeting: Equatable, Identifiable, Codable {
+public struct Meeting: Hashable, Identifiable, Codable {
     public let id: Tagged<Self, UUID>
     public let date: Date
     public var transcript: String

@@ -1,10 +1,8 @@
 import SwiftUI
 import SwiftUINavigation
-import SwiftUINavigationBackport
+import Dependencies
 
 import Models
-import StandupDetailFeature
-import EditStandupFeature
 
 // MARK: - StandupsListView
 
@@ -36,49 +34,22 @@ public struct StandupsListView: View {
                 Image(systemName: "plus")
             }
         }
-        .navigationTitle(navigationTitle)
-        .navigationDestination(
-            unwrapping: $model.destination,
-            case: /StandupsListModel.Destination.detail
-        ) { $detailModel in
-            StandupDetailView(model: detailModel)
-        }
-        .sheet(
-            unwrapping: $model.destination,
-            case: /StandupsListModel.Destination.add
-        ) { $model in
-            NavigationView {
-                EditStandupView(model: model)
-            }
-        }
-    }
-
-    // MARK: Helpers
-
-    var navigationTitle: String {
-        if let attendee = model.attendee {
-            return "\(attendee.name)'s Standups"
-        } else {
-            return "Daily Standups"
-        }
+        .navigationTitle("Daily Standups")
     }
 }
 
-// MARK: - StandupsListView+Previews
+ // MARK: - StandupsListView+Previews
 
 struct StandupsListView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            StandupsListView(
-                model: StandupsListModel(
-                    destination: .add(
-                        EditStandupModel(
-                            focus: .attendee(Standup.mock.attendees[3].id),
-                            standup: .mock
-                        )
-                    )
+        NavigationStack {
+            withDependencies {
+                $0.standupsProvider = .mock(initialData: [.mock])
+            } operation: {
+                StandupsListView(
+                    model: StandupsListModel()
                 )
-            )
+            }
         }
     }
 }

@@ -9,11 +9,13 @@
 /* Begin PBXBuildFile section */
 		95318B75298827B90010090A /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 95318B74298827B90010090A /* Models */; };
 		95318B79298828140010090A /* StandupsListFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 95318B78298828140010090A /* StandupsListFeature */; };
-		95C3A1C62996D04B008CA81D /* Navigation in Frameworks */ = {isa = PBXBuildFile; productRef = 95C3A1C52996D04B008CA81D /* Navigation */; };
 		95C9609529949FB40092A978 /* StandupsAppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C9609429949FB40092A978 /* StandupsAppModel.swift */; };
-		95C960972994A7100092A978 /* OtherFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 95C960962994A7100092A978 /* OtherFeature */; };
+		BCBB2EB92997708F00AFB02F /* StandupDetailFeature in Frameworks */ = {isa = PBXBuildFile; productRef = BCBB2EB82997708F00AFB02F /* StandupDetailFeature */; };
+		BCBB2EBB2997FEA200AFB02F /* RecordStandupFeature in Frameworks */ = {isa = PBXBuildFile; productRef = BCBB2EBA2997FEA200AFB02F /* RecordStandupFeature */; };
+		BCBB2EBE2998182E00AFB02F /* EditStandupFeature in Frameworks */ = {isa = PBXBuildFile; productRef = BCBB2EBD2998182E00AFB02F /* EditStandupFeature */; };
+		BCBB2EC129981F9400AFB02F /* RootPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBB2EC029981F9400AFB02F /* RootPath.swift */; };
+		BCBB2EC329981F9D00AFB02F /* RootDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBB2EC229981F9D00AFB02F /* RootDestination.swift */; };
 		CA7A2841291F5BF0003B349D /* StandupsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7A2840291F5BF0003B349D /* StandupsApp.swift */; };
-		CA7A2845291F5BF1003B349D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7A2844291F5BF1003B349D /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,9 +23,11 @@
 		95318B7A298828280010090A /* Documentation */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Documentation; sourceTree = "<group>"; };
 		957E166F29841A4500BB8F88 /* Features */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Features; sourceTree = "<group>"; };
 		95C9609429949FB40092A978 /* StandupsAppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandupsAppModel.swift; sourceTree = "<group>"; };
+		BCBB2EBC299813C500AFB02F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BCBB2EC029981F9400AFB02F /* RootPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootPath.swift; sourceTree = "<group>"; };
+		BCBB2EC229981F9D00AFB02F /* RootDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootDestination.swift; sourceTree = "<group>"; };
 		CA7A283D291F5BF0003B349D /* Standups.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Standups.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA7A2840291F5BF0003B349D /* StandupsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandupsApp.swift; sourceTree = "<group>"; };
-		CA7A2844291F5BF1003B349D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,9 +36,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				95318B75298827B90010090A /* Models in Frameworks */,
+				BCBB2EB92997708F00AFB02F /* StandupDetailFeature in Frameworks */,
+				BCBB2EBE2998182E00AFB02F /* EditStandupFeature in Frameworks */,
+				BCBB2EBB2997FEA200AFB02F /* RecordStandupFeature in Frameworks */,
 				95318B79298828140010090A /* StandupsListFeature in Frameworks */,
-				95C3A1C62996D04B008CA81D /* Navigation in Frameworks */,
-				95C960972994A7100092A978 /* OtherFeature in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,6 +51,15 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BCBB2EBF29981F7B00AFB02F /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				BCBB2EC029981F9400AFB02F /* RootPath.swift */,
+				BCBB2EC229981F9D00AFB02F /* RootDestination.swift */,
+			);
+			path = Navigation;
 			sourceTree = "<group>";
 		};
 		CA7A2834291F5BF0003B349D = {
@@ -73,7 +87,8 @@
 				4B1E727629283445008B1AAB /* Info.plist */,
 				CA7A2840291F5BF0003B349D /* StandupsApp.swift */,
 				95C9609429949FB40092A978 /* StandupsAppModel.swift */,
-				CA7A2844291F5BF1003B349D /* Assets.xcassets */,
+				BCBB2EBC299813C500AFB02F /* Assets.xcassets */,
+				BCBB2EBF29981F7B00AFB02F /* Navigation */,
 			);
 			path = Standups;
 			sourceTree = "<group>";
@@ -97,8 +112,9 @@
 			packageProductDependencies = (
 				95318B74298827B90010090A /* Models */,
 				95318B78298828140010090A /* StandupsListFeature */,
-				95C960962994A7100092A978 /* OtherFeature */,
-				95C3A1C52996D04B008CA81D /* Navigation */,
+				BCBB2EB82997708F00AFB02F /* StandupDetailFeature */,
+				BCBB2EBA2997FEA200AFB02F /* RecordStandupFeature */,
+				BCBB2EBD2998182E00AFB02F /* EditStandupFeature */,
 			);
 			productName = Standups;
 			productReference = CA7A283D291F5BF0003B349D /* Standups.app */;
@@ -149,7 +165,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA7A2845291F5BF1003B349D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,7 +176,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA7A2841291F5BF0003B349D /* StandupsApp.swift in Sources */,
+				BCBB2EC129981F9400AFB02F /* RootPath.swift in Sources */,
 				95C9609529949FB40092A978 /* StandupsAppModel.swift in Sources */,
+				BCBB2EC329981F9D00AFB02F /* RootDestination.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,7 +320,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -340,7 +357,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -433,13 +450,17 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = StandupsListFeature;
 		};
-		95C3A1C52996D04B008CA81D /* Navigation */ = {
+		BCBB2EB82997708F00AFB02F /* StandupDetailFeature */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = Navigation;
+			productName = StandupDetailFeature;
 		};
-		95C960962994A7100092A978 /* OtherFeature */ = {
+		BCBB2EBA2997FEA200AFB02F /* RecordStandupFeature */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = OtherFeature;
+			productName = RecordStandupFeature;
+		};
+		BCBB2EBD2998182E00AFB02F /* EditStandupFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EditStandupFeature;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

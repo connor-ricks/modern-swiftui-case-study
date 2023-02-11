@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-public enum StandupTheme: String, CaseIterable, Equatable, Hashable, Identifiable, Codable {
+public enum StandupTheme: String, CaseIterable, Hashable, Identifiable, Codable {
     case bubblegum
     case buttercup
     case indigo
@@ -26,7 +26,7 @@ public enum StandupTheme: String, CaseIterable, Equatable, Hashable, Identifiabl
     }
     
     public var primaryColor: Color {
-        Color(rawValue)
+        Color(rawValue, bundle: .module)
     }
     
     public var accentColor: Color {

@@ -2,16 +2,21 @@ import SwiftUI
 
 import Models
 
-struct MeetingView: View {
+public struct MeetingView: View {
     
     // MARK: Properties
     
     let meeting: Meeting
     let standup: Standup
+
+    public init(meeting: Meeting, standup: Standup) {
+        self.meeting = meeting
+        self.standup = standup
+    }
     
     // MARK: Body
     
-    var body: some View {
+    public var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
                 Divider()

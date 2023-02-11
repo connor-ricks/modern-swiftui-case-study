@@ -7,7 +7,6 @@ public struct RecordStandupView: View {
     
     // MARK: Properties
     
-    @Environment(\.dismiss) var dismiss
     @ObservedObject var model: RecordStandupModel
     
     // MARK: Initializers
@@ -22,7 +21,6 @@ public struct RecordStandupView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 16)
                 .fill(self.model.standup.theme.primaryColor)
-            
             VStack {
                 MeetingHeaderView(
                     secondsElapsed: model.secondsElapsed,
@@ -50,7 +48,6 @@ public struct RecordStandupView: View {
         }
         .navigationBarBackButtonHidden(true)
         .task { await model.task() }
-        .onChange(of: model.dismiss) { _ in self.dismiss() }
         .alert(
             unwrapping: $model.destination,
             case: /RecordStandupModel.Destination.alert
@@ -64,7 +61,7 @@ public struct RecordStandupView: View {
 
 struct RecordStandupView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
+        NavigationStack {
             RecordStandupView(
                 model: RecordStandupModel(standup: .mock)
             )

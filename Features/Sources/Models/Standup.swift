@@ -4,7 +4,7 @@ import IdentifiedCollections
 
 // MARK: - Standup
 
-public struct Standup: Equatable, Identifiable, Codable {
+public struct Standup: Hashable, Identifiable, Codable {
     public let id: Tagged<Self, UUID>
     public var attendees: IdentifiedArrayOf<Attendee> = []
     public var duration = TimeInterval(300)
@@ -62,7 +62,7 @@ extension Standup {
           """
             )
         ],
-        theme: .orange,
+        theme: .bubblegum,
         title: "Design"
     )
 }

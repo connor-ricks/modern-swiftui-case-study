@@ -5,17 +5,8 @@ import Dependencies
 
 import Models
 
-// MARK: - RecordStandupModelDelegate
-
-public protocol RecordStandupModelDelegate: AnyObject {
-    func recordStandupModel(_ model: RecordStandupModel, didCancelMeetingWith transcript: String)
-    func recordStandupModel(_ model: RecordStandupModel, didFinishMeetingWith transcript: String)
-}
-
-// MARK: - RecordStandupModel
-
 @MainActor
-public class RecordStandupModel: ObservableObject {
+public class RecordStandupModel: ViewModel {
     
     // MARK: Destination
     
@@ -31,20 +22,21 @@ public class RecordStandupModel: ObservableObject {
     }
     
     // MARK: Properties
-    
+
+    let standup: Standup
+
     @Dependency(\.speechClient) var speechClient
-    
+
     @Published var destination: Destination?
-    @Published private(set) var dismiss = false
     @Published private(set) var secondsElapsed = 0
     @Published private(set) var speakerIndex = 0
-    
-    let standup: Standup
-    
-    private var transcript = ""
 
-    public weak var delegate: RecordStandupModelDelegate?
-    
+    public var onMeetingFinished: (String) -> Void = unimplemented("RecordStandupModel.onMeetingFinished")
+    public var onDiscardMeeting: () -> Void = unimplemented("RecordStandupModel.onDiscardMeeting")
+
+    private var transcript = ""
+    private var countingTask: Task<Void, Never>? = nil
+
     var durationRemaining: TimeInterval {
         self.standup.duration - TimeInterval(secondsElapsed)
     }
@@ -68,7 +60,7 @@ public class RecordStandupModel: ObservableObject {
     // MARK: Actions
     
     func nextButtonTapped() {
-        guard self.speakerIndex < self.standup.attendees.count - 1 else {
+        guard speakerIndex < standup.attendees.count - 1 else {
             destination = .alert(
                 AlertState(
                     title: TextState("End meeting?"),
@@ -103,59 +95,62 @@ public class RecordStandupModel: ObservableObject {
     func alertButtonTapped(_ action: AlertAction) {
         switch action {
         case .confirmSave:
-            delegate?.recordStandupModel(self, didFinishMeetingWith: transcript)
-            dismiss = true
-
+            finishMeeting(discard: false)
         case .confirmDiscard:
-            delegate?.recordStandupModel(self, didCancelMeetingWith: transcript)
-            dismiss = true
+            finishMeeting(discard: true)
         }
     }
     
     // MARK: Helpers
-    
-    @MainActor
+
     func task() async {
-        do {
-            let authorization = await speechClient.requestAuthorization()
-            try await withThrowingTaskGroup(of: Void.self) { group in
-                if authorization == .authorized {
-                    group.addTask {
-                        try await self.startSpeechRecognition()
+        let authorization = await speechClient.requestAuthorization()
+        if case .authorized = authorization {
+            startSpeechRecognition()
+            startTimer()
+        } else {
+            destination = .alert(AlertState(title: TextState("No permissions for speach recognition.")))
+        }
+    }
+    
+    private func startSpeechRecognition() {
+        Task {
+            do {
+                for try await result in await speechClient.startTask(SFSpeechAudioBufferRecognitionRequest()) {
+                    transcript = result.bestTranscription.formattedString
+                }
+            } catch {
+                destination = .alert(AlertState(title: TextState("Something went wrong transcribing audio.")))
+            }
+        }
+    }
+
+    /// This is not a good example of code, just something quick to showcase a more complex task interaction and navigation.
+    private func startTimer() {
+        self.countingTask = Task {
+            while countingTask?.isCancelled == false {
+                try? await Task.sleep(nanoseconds: 1_000_000_000)
+                guard !isAlertOpen else { continue }
+                secondsElapsed += 1
+                if secondsElapsed.isMultiple(of: Int(standup.durationPerAttendee)) {
+                    if speakerIndex == standup.attendees.count - 1 {
+                        finishMeeting(discard: false)
+                        break
                     }
+
+                    speakerIndex += 1
                 }
-                
-                group.addTask {
-                    try await self.startTimer()
-                }
-                
-                try await group.waitForAll()
             }
-        } catch {
-            destination = .alert(AlertState(title: TextState("Something went wrong.")))
         }
     }
-    
-    private func startSpeechRecognition() async throws {
-        for try await result in await speechClient.startTask(SFSpeechAudioBufferRecognitionRequest()) {
-            transcript = result.bestTranscription.formattedString
-        }
-    }
-    
-    private func startTimer() async throws {
-        while !dismiss {
-            try? await Task.sleep(nanoseconds: 1_000_000_000) // Should be an injectable dependency.
-            guard destination == nil else { continue } // Pause while alert is up.
-            secondsElapsed += 1
-            if secondsElapsed.isMultiple(of: Int(standup.durationPerAttendee)) {
-                if speakerIndex == standup.attendees.count - 1 {
-                    delegate?.recordStandupModel(self, didFinishMeetingWith: transcript)
-                    dismiss = true
-                    break
-                }
-                
-                speakerIndex += 1
-            }
+
+    private func finishMeeting(discard: Bool) {
+        countingTask?.cancel()
+        countingTask = nil
+        if discard {
+            onDiscardMeeting()
+        } else {
+            onMeetingFinished(transcript)
         }
     }
 }
