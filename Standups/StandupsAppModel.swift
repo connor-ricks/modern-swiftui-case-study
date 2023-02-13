@@ -15,7 +15,7 @@ class StandupsAppModel: ViewModel {
 
     // MARK: Properties
 
-    @Published var path: [RootPath] {
+    @Published var path: [RootPathComponent] {
         didSet { bind() }
     }
 
@@ -30,7 +30,7 @@ class StandupsAppModel: ViewModel {
     // MARK: Initializers
 
     init(
-        path: [RootPath] = [],
+        path: [RootPathComponent] = [],
         destination: RootDestination? = nil,
         standupsListModel: StandupsListModel
     ) {
@@ -44,21 +44,18 @@ class StandupsAppModel: ViewModel {
     // MARK: Bind
 
     private func bind() {
-        print("Path: \(path.debugDescription)")
-        print("Destination: \(destination.debugDescription)")
-
         // Bind Root View
         bind(standupsListModel: standupsListModel)
 
         // Bind Path
         for item in path {
             switch item {
-            case let .detail(standupDetailModel):
-                bind(standupDetailModel: standupDetailModel)
+            case let .detail(standupDetailModel, standupDetailDestination):
+                bind(standupDetailModel: standupDetailModel, standupDetailDestination: standupDetailDestination)
             case .meeting:
                 break
             case let .record(recordStandupModel):
-                guard let standupDetailModel = path.compactMap(/RootPath.detail).last else {
+                guard let (standupDetailModel, _) = path.compactMap(/RootPathComponent.detail).last else {
                     assertionFailure("Attempting to record a Standup without a StandupDetailModel in the path.")
                     return
                 }
@@ -71,13 +68,6 @@ class StandupsAppModel: ViewModel {
         switch destination {
         case let .add(editStandupModel):
             bind(editStandupModel: editStandupModel, to: standupsListModel)
-        case let .edit(editStandupModel):
-            guard let standupDetailModel = path.compactMap(/RootPath.detail).last else {
-                assertionFailure("Attempting to edit a Standup without a StandupDetailModel in the path.")
-                return
-            }
-
-            bind(editStandupModel: editStandupModel, to: standupDetailModel)
         case .none:
             break
         }
@@ -90,7 +80,7 @@ extension StandupsAppModel {
     private func bind(standupsListModel: StandupsListModel) {
         standupsListModel.onStandupTapped = { [weak self] standup in
             self?.path.append(
-                .detail(model: StandupDetailModel(standup: standup))
+                .detail(model: StandupDetailModel(standup: standup), destination: nil)
             )
         }
 
@@ -103,9 +93,14 @@ extension StandupsAppModel {
 // MARK: - StandupsAppModel+StandupDetailModel Binding
 
 extension StandupsAppModel {
-    private func bind(standupDetailModel: StandupDetailModel) {
+    private func bind(standupDetailModel: StandupDetailModel, standupDetailDestination: StandupDetailDestination?) {
+        guard let componentIndex = path.firstIndex(of: .detail(model: standupDetailModel, destination: standupDetailDestination)) else { return }
+
         standupDetailModel.onEditTapped = { [weak self] standup in
-            self?.destination = .edit(EditStandupModel(standup: standup))
+            guard let self else { return }
+            let editStandupModel = EditStandupModel(standup: standup)
+            self.bind(editStandupModel: editStandupModel, to: standupDetailModel)
+            self.update(destination: .edit(editStandupModel), in: self.path[componentIndex])
         }
 
         standupDetailModel.onDeleteTapped = { [weak self] standup in
@@ -166,5 +161,35 @@ extension StandupsAppModel {
             standupDetailModel.standup = standup
             self?.destination = nil
         }
+    }
+}
+
+extension StandupsAppModel {
+    func update<D>(destination: D, in component: RootPathComponent) {
+        guard let index = path.firstIndex(of: component) else { return }
+        switch component {
+        case let .detail(model, _):
+            (/RootPathComponent.detail).embed(destination)
+            path[index] = .detail(model: model, destination: <#T##StandupDetailDestination?#>)
+        case .meeting, .record:
+            break
+        }
+
+        let stuff = CasePath(component).embed(destination)
+//        var component = component = component
+        CasePath(component).embed("hello")
+    }
+}
+
+extension StandupsAppModel {
+    func update(destination: StandupDetailDestination?, in component: RootPathComponent) {
+        guard let index = path.firstIndex(of: component) else { return }
+        var component = component
+        try! (/RootPathComponent.detail).modify(&component) { values in
+            values.1 = destination
+        }
+
+        path[index] = component
+        print(path)
     }
 }

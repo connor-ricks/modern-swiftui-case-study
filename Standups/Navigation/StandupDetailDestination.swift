@@ -2,6 +2,6 @@ import Foundation
 
 import EditStandupFeature
 
-enum StandupDetailDestination {
+enum StandupDetailDestination: Hashable {
     case edit(EditStandupModel)
 }

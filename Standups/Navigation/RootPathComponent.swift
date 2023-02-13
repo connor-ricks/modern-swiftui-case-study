@@ -4,8 +4,8 @@ import StandupDetailFeature
 import RecordStandupFeature
 import Models
 
-enum RootPath: Hashable {
-    case detail(model: StandupDetailModel)
+enum RootPathComponent: Hashable {
+    case detail(model: StandupDetailModel, destination: StandupDetailDestination?)
     case meeting(Meeting, standup: Standup)
     case record(RecordStandupModel)
 }
