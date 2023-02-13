@@ -14,28 +14,15 @@ class RecordMeetingTests: XCTestCase {
             standup.duration = 6
             let recordModel = RecordStandupModel(standup: standup)
 
-            let mockDelegate = MockDelegate()
-            recordModel.delegate = mockDelegate
+            let expectation = expectation(description: "didFinishMeeting")
+            recordModel.onMeetingFinished = {
+                expectation.fulfill()
+            }
 
             await recordModel.task()
-            self.wait(for: [mockDelegate.didFinishExpectation], timeout: 0)
+            self.waitForExpectations(timeout: 10)
             XCTAssertEqual(recordModel.secondsElapsed, 6)
             XCTAssertEqual(recordModel.dismiss, true)
-        }
-    }
-
-    class MockDelegate: RecordStandupModelDelegate {
-        let didFinishExpectation: XCTestExpectation = XCTestExpectation(description: "didFinishMeeting")
-        let didCancelExpectation: XCTestExpectation = XCTestExpectation(description: "didCancelMeeting")
-
-        init() {}
-
-        func recordStandupModel(_ model: RecordStandupModel, didCancelMeetingWith transcript: String) {
-            didCancelExpectation.fulfill()
-        }
-
-        func recordStandupModel(_ model: RecordStandupModel, didFinishMeetingWith transcript: String) {
-            didFinishExpectation.fulfill()
         }
     }
 }
