@@ -3,6 +3,7 @@ import XCTest
 import Models
 @testable import EditStandupFeature
 
+@MainActor
 class EditStandupTests: XCTestCase {
     func testDeletion() {
         let model = EditStandupModel(

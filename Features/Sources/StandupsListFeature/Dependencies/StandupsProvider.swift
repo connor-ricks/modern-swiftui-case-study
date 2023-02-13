@@ -14,7 +14,7 @@ public struct StandupsProvider: Sendable {
 // MARK: - StandupsProvider+Dependency
 
 extension DependencyValues {
-    var standupsProvider: StandupsProvider {
+    public var standupsProvider: StandupsProvider {
         get { self[StandupsProvider.self] }
         set { self[StandupsProvider.self] = newValue }
     }
@@ -50,7 +50,7 @@ extension StandupsProvider: DependencyKey {
 
 #if DEBUG
 extension StandupsProvider {
-    static func mock(initialData: IdentifiedArrayOf<Standup> = []) -> StandupsProvider {
+    public static func mock(initialData: IdentifiedArrayOf<Standup> = []) -> StandupsProvider {
         let data = LockIsolated(initialData)
         return StandupsProvider(
             load: { data.value },
@@ -58,14 +58,14 @@ extension StandupsProvider {
         )
     }
     
-    static let failToWrite = StandupsProvider(
+    public static let failToWrite = StandupsProvider(
         load: { [] },
         save: { _ in 
             struct SaveError: Error {}
             throw SaveError()
         }
     )
-    static let failToLoad = StandupsProvider(
+    public static let failToLoad = StandupsProvider(
         load: {
             struct LoadError: Error {}
             throw LoadError()

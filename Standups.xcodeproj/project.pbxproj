@@ -9,25 +9,33 @@
 /* Begin PBXBuildFile section */
 		95318B75298827B90010090A /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 95318B74298827B90010090A /* Models */; };
 		95318B79298828140010090A /* StandupsListFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 95318B78298828140010090A /* StandupsListFeature */; };
-		95C9609529949FB40092A978 /* StandupsAppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C9609429949FB40092A978 /* StandupsAppModel.swift */; };
+		95B4B7A3299A966A0072FDE3 /* StandupsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B4B7A2299A966A0072FDE3 /* StandupsTabView.swift */; };
+		95B4B7A6299A969E0072FDE3 /* StandupsTabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B4B7A5299A969E0072FDE3 /* StandupsTabModel.swift */; };
+		95B4B7A9299A9B490072FDE3 /* ProfileTabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B4B7A8299A9B490072FDE3 /* ProfileTabModel.swift */; };
+		95B4B7AB299A9B500072FDE3 /* ProfileTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B4B7AA299A9B500072FDE3 /* ProfileTabView.swift */; };
+		95C9609529949FB40092A978 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C9609429949FB40092A978 /* AppModel.swift */; };
 		BCBB2EB92997708F00AFB02F /* StandupDetailFeature in Frameworks */ = {isa = PBXBuildFile; productRef = BCBB2EB82997708F00AFB02F /* StandupDetailFeature */; };
 		BCBB2EBB2997FEA200AFB02F /* RecordStandupFeature in Frameworks */ = {isa = PBXBuildFile; productRef = BCBB2EBA2997FEA200AFB02F /* RecordStandupFeature */; };
 		BCBB2EBE2998182E00AFB02F /* EditStandupFeature in Frameworks */ = {isa = PBXBuildFile; productRef = BCBB2EBD2998182E00AFB02F /* EditStandupFeature */; };
-		BCBB2EC129981F9400AFB02F /* RootPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBB2EC029981F9400AFB02F /* RootPath.swift */; };
-		BCBB2EC329981F9D00AFB02F /* RootDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBB2EC229981F9D00AFB02F /* RootDestination.swift */; };
-		CA7A2841291F5BF0003B349D /* StandupsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7A2840291F5BF0003B349D /* StandupsApp.swift */; };
+		BCBB2EC129981F9400AFB02F /* StandupTabPathComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBB2EC029981F9400AFB02F /* StandupTabPathComponent.swift */; };
+		BCBB2EC329981F9D00AFB02F /* StandupTabDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBB2EC229981F9D00AFB02F /* StandupTabDestination.swift */; };
+		CA7A2841291F5BF0003B349D /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7A2840291F5BF0003B349D /* App.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4B1E727629283445008B1AAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		95318B7A298828280010090A /* Documentation */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Documentation; sourceTree = "<group>"; };
 		957E166F29841A4500BB8F88 /* Features */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Features; sourceTree = "<group>"; };
-		95C9609429949FB40092A978 /* StandupsAppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandupsAppModel.swift; sourceTree = "<group>"; };
+		95B4B7A2299A966A0072FDE3 /* StandupsTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandupsTabView.swift; sourceTree = "<group>"; };
+		95B4B7A5299A969E0072FDE3 /* StandupsTabModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandupsTabModel.swift; sourceTree = "<group>"; };
+		95B4B7A8299A9B490072FDE3 /* ProfileTabModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabModel.swift; sourceTree = "<group>"; };
+		95B4B7AA299A9B500072FDE3 /* ProfileTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabView.swift; sourceTree = "<group>"; };
+		95C9609429949FB40092A978 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		BCBB2EBC299813C500AFB02F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		BCBB2EC029981F9400AFB02F /* RootPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootPath.swift; sourceTree = "<group>"; };
-		BCBB2EC229981F9D00AFB02F /* RootDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootDestination.swift; sourceTree = "<group>"; };
+		BCBB2EC029981F9400AFB02F /* StandupTabPathComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandupTabPathComponent.swift; sourceTree = "<group>"; };
+		BCBB2EC229981F9D00AFB02F /* StandupTabDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandupTabDestination.swift; sourceTree = "<group>"; };
 		CA7A283D291F5BF0003B349D /* Standups.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Standups.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA7A2840291F5BF0003B349D /* StandupsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandupsApp.swift; sourceTree = "<group>"; };
+		CA7A2840291F5BF0003B349D /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,13 +61,24 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		BCBB2EBF29981F7B00AFB02F /* Navigation */ = {
+		95B4B7A4299A968E0072FDE3 /* StandupsTab */ = {
 			isa = PBXGroup;
 			children = (
-				BCBB2EC029981F9400AFB02F /* RootPath.swift */,
-				BCBB2EC229981F9D00AFB02F /* RootDestination.swift */,
+				95B4B7A5299A969E0072FDE3 /* StandupsTabModel.swift */,
+				95B4B7A2299A966A0072FDE3 /* StandupsTabView.swift */,
+				BCBB2EC229981F9D00AFB02F /* StandupTabDestination.swift */,
+				BCBB2EC029981F9400AFB02F /* StandupTabPathComponent.swift */,
 			);
-			path = Navigation;
+			path = StandupsTab;
+			sourceTree = "<group>";
+		};
+		95B4B7A7299A9B3B0072FDE3 /* ProfileTab */ = {
+			isa = PBXGroup;
+			children = (
+				95B4B7A8299A9B490072FDE3 /* ProfileTabModel.swift */,
+				95B4B7AA299A9B500072FDE3 /* ProfileTabView.swift */,
+			);
+			path = ProfileTab;
 			sourceTree = "<group>";
 		};
 		CA7A2834291F5BF0003B349D = {
@@ -85,10 +104,11 @@
 			isa = PBXGroup;
 			children = (
 				4B1E727629283445008B1AAB /* Info.plist */,
-				CA7A2840291F5BF0003B349D /* StandupsApp.swift */,
-				95C9609429949FB40092A978 /* StandupsAppModel.swift */,
+				CA7A2840291F5BF0003B349D /* App.swift */,
+				95C9609429949FB40092A978 /* AppModel.swift */,
 				BCBB2EBC299813C500AFB02F /* Assets.xcassets */,
-				BCBB2EBF29981F7B00AFB02F /* Navigation */,
+				95B4B7A7299A9B3B0072FDE3 /* ProfileTab */,
+				95B4B7A4299A968E0072FDE3 /* StandupsTab */,
 			);
 			path = Standups;
 			sourceTree = "<group>";
@@ -175,10 +195,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA7A2841291F5BF0003B349D /* StandupsApp.swift in Sources */,
-				BCBB2EC129981F9400AFB02F /* RootPath.swift in Sources */,
-				95C9609529949FB40092A978 /* StandupsAppModel.swift in Sources */,
-				BCBB2EC329981F9D00AFB02F /* RootDestination.swift in Sources */,
+				CA7A2841291F5BF0003B349D /* App.swift in Sources */,
+				95B4B7A6299A969E0072FDE3 /* StandupsTabModel.swift in Sources */,
+				95B4B7AB299A9B500072FDE3 /* ProfileTabView.swift in Sources */,
+				95B4B7A3299A966A0072FDE3 /* StandupsTabView.swift in Sources */,
+				95B4B7A9299A9B490072FDE3 /* ProfileTabModel.swift in Sources */,
+				BCBB2EC129981F9400AFB02F /* StandupTabPathComponent.swift in Sources */,
+				95C9609529949FB40092A978 /* AppModel.swift in Sources */,
+				BCBB2EC329981F9D00AFB02F /* StandupTabDestination.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

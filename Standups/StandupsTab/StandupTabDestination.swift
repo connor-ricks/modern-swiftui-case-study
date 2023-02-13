@@ -2,7 +2,7 @@ import Foundation
 
 import EditStandupFeature
 
-enum RootDestination: Hashable {
+enum StandupTabDestination: Hashable {
     case add(EditStandupModel)
     case edit(EditStandupModel)
 }

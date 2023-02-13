@@ -8,18 +8,18 @@ import StandupDetailFeature
 import EditStandupFeature
 import RecordStandupFeature
 
-// MARK: - StandupsAppModel
+// MARK: - StandupsTabModel
 
 @MainActor
-class StandupsAppModel: ViewModel {
+class StandupsTabModel: ViewModel {
 
     // MARK: Properties
 
-    @Published var path: [RootPath] {
+    @Published var path: [StandupTabPathComponent] {
         didSet { bind() }
     }
 
-    @Published var destination: RootDestination? = nil {
+    @Published var destination: StandupTabDestination? = nil {
         didSet { bind() }
     }
 
@@ -30,8 +30,8 @@ class StandupsAppModel: ViewModel {
     // MARK: Initializers
 
     init(
-        path: [RootPath] = [],
-        destination: RootDestination? = nil,
+        path: [StandupTabPathComponent] = [],
+        destination: StandupTabDestination? = nil,
         standupsListModel: StandupsListModel
     ) {
         self.path = path
@@ -58,7 +58,7 @@ class StandupsAppModel: ViewModel {
             case .meeting:
                 break
             case let .record(recordStandupModel):
-                guard let standupDetailModel = path.compactMap(/RootPath.detail).last else {
+                guard let standupDetailModel = path.compactMap(/StandupTabPathComponent.detail).last else {
                     assertionFailure("Attempting to record a Standup without a StandupDetailModel in the path.")
                     return
                 }
@@ -72,7 +72,7 @@ class StandupsAppModel: ViewModel {
         case let .add(editStandupModel):
             bind(editStandupModel: editStandupModel, to: standupsListModel)
         case let .edit(editStandupModel):
-            guard let standupDetailModel = path.compactMap(/RootPath.detail).last else {
+            guard let standupDetailModel = path.compactMap(/StandupTabPathComponent.detail).last else {
                 assertionFailure("Attempting to edit a Standup without a StandupDetailModel in the path.")
                 return
             }
@@ -82,11 +82,23 @@ class StandupsAppModel: ViewModel {
             break
         }
     }
+
+    // MARK: Actions
+
+    func presentAddStandup() {
+        self.path = []
+        self.destination = .add(.init())
+    }
+
+    func presentEditStandup(for standup: Standup) {
+        self.path = [.detail(model: .init(standup: standup))]
+        self.destination = .edit(.init(standup: standup))
+    }
 }
 
-// MARK: - StandupsAppModel+StandupsListModel Binding
+// MARK: - StandupsListModel Binding
 
-extension StandupsAppModel {
+extension StandupsTabModel {
     private func bind(standupsListModel: StandupsListModel) {
         standupsListModel.onStandupTapped = { [weak self] standup in
             self?.path.append(
@@ -100,9 +112,9 @@ extension StandupsAppModel {
     }
 }
 
-// MARK: - StandupsAppModel+StandupDetailModel Binding
+// MARK: - StandupDetailModel Binding
 
-extension StandupsAppModel {
+extension StandupsTabModel {
     private func bind(standupDetailModel: StandupDetailModel) {
         standupDetailModel.onEditTapped = { [weak self] standup in
             self?.destination = .edit(EditStandupModel(standup: standup))
@@ -127,9 +139,9 @@ extension StandupsAppModel {
     }
 }
 
-// MARK: - StandupsAppModel+RecordStandupModel Binding
+// MARK: - RecordStandupModel Binding
 
-extension StandupsAppModel {
+extension StandupsTabModel {
     private func bind(recordStandupModel: RecordStandupModel, to standupDetailModel: StandupDetailModel) {
         recordStandupModel.onMeetingFinished = { [weak self] transcript in
             let meeting = Meeting(id: .init(rawValue: UUID()), date: Date(), transcript: transcript)
@@ -143,9 +155,9 @@ extension StandupsAppModel {
     }
 }
 
-// MARK: - StandupsAppModel+EditStandupModel Binding
+// MARK: - EditStandupModel Binding
 
-extension StandupsAppModel {
+extension StandupsTabModel {
     private func bind(editStandupModel: EditStandupModel, to standupListModel: StandupsListModel) {
         editStandupModel.onEditingCanceled = { [weak self] in
             self?.destination = nil
