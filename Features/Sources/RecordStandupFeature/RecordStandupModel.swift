@@ -35,7 +35,7 @@ public class RecordStandupModel: ViewModel {
     public var onDiscardMeeting: () -> Void = unimplemented("RecordStandupModel.onDiscardMeeting")
 
     private var transcript = ""
-    private var countingTask: Task<Void, Never>? = nil
+    private var timer: Timer? = nil
 
     var durationRemaining: TimeInterval {
         self.standup.duration - TimeInterval(secondsElapsed)
@@ -107,10 +107,11 @@ public class RecordStandupModel: ViewModel {
         let authorization = await speechClient.requestAuthorization()
         if case .authorized = authorization {
             startSpeechRecognition()
-            startTimer()
         } else {
             destination = .alert(AlertState(title: TextState("No permissions for speach recognition.")))
         }
+
+        startTimer()
     }
     
     private func startSpeechRecognition() {
@@ -127,26 +128,24 @@ public class RecordStandupModel: ViewModel {
 
     /// This is not a good example of code, just something quick to showcase a more complex task interaction and navigation.
     private func startTimer() {
-        self.countingTask = Task {
-            while countingTask?.isCancelled == false {
-                try? await Task.sleep(nanoseconds: 1_000_000_000)
-                guard !isAlertOpen else { continue }
-                secondsElapsed += 1
-                if secondsElapsed.isMultiple(of: Int(standup.durationPerAttendee)) {
-                    if speakerIndex == standup.attendees.count - 1 {
-                        finishMeeting(discard: false)
-                        break
-                    }
-
-                    speakerIndex += 1
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { @MainActor [weak self] timer in
+            guard let self else { return }
+            guard !self.isAlertOpen else { return }
+            self.secondsElapsed += 1
+            if self.secondsElapsed.isMultiple(of: Int(self.standup.durationPerAttendee)) {
+                if self.speakerIndex == self.standup.attendees.count - 1 {
+                    self.finishMeeting(discard: false)
+                    return
                 }
+
+                self.speakerIndex += 1
             }
         }
     }
 
     private func finishMeeting(discard: Bool) {
-        countingTask?.cancel()
-        countingTask = nil
+        timer?.invalidate()
+        timer = nil
         if discard {
             onDiscardMeeting()
         } else {

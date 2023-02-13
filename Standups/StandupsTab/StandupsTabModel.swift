@@ -23,9 +23,7 @@ class StandupsTabModel: ViewModel {
         didSet { bind() }
     }
 
-    @Published var standupsListModel: StandupsListModel {
-        didSet { bind() }
-    }
+    let standupsListModel: StandupsListModel
 
     // MARK: Initializers
 
@@ -48,8 +46,8 @@ class StandupsTabModel: ViewModel {
         bind(standupsListModel: standupsListModel)
 
         // Bind Path
-        for destination in path {
-            switch destination {
+        for component in path {
+            switch component {
             case let .detail(standupDetailModel):
                 bind(standupDetailModel: standupDetailModel)
             case .meeting:

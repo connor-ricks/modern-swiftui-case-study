@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftUINavigation
+import Dependencies
 import NavigationBackport
 
 // MARK: - RecordStandupView
@@ -62,10 +63,14 @@ public struct RecordStandupView: View {
 
 struct RecordStandupView_Previews: PreviewProvider {
     static var previews: some View {
-        NBNavigationStack {
-            RecordStandupView(
-                model: RecordStandupModel(standup: .mock)
-            )
+        withDependencies {
+            $0.speechClient.requestAuthorization = { .authorized }
+        } operation: {
+            NBNavigationStack {
+                RecordStandupView(
+                    model: RecordStandupModel(standup: .mock)
+                )
+            }
         }
     }
 }

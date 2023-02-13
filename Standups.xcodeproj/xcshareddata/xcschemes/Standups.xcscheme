@@ -75,7 +75,18 @@
                BlueprintIdentifier = "NavigationBackportTests"
                BuildableName = "NavigationBackportTests"
                BlueprintName = "NavigationBackportTests"
-               ReferencedContainer = "container:../member-ios-app/Libraries/Foundation/Foundations">
+               ReferencedContainer = "container:Foundations">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "95B629AD299AF21500CB5322"
+               BuildableName = "StandupsTests.xctest"
+               BlueprintName = "StandupsTests"
+               ReferencedContainer = "container:Standups.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

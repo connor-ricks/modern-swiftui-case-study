@@ -10,7 +10,11 @@ final public class StandupsListModel: ObservableObject {
     // MARK: Properties
     
     @Dependency(\.standupsProvider) var standupsProvider
-    @Published public var standups: IdentifiedArrayOf<Standup>
+    @Published public var standups: IdentifiedArrayOf<Standup> {
+        didSet {
+            saveStandups()
+        }
+    }
     
     public var onAddStandupTapped: () -> Void = unimplemented("StandupsListModel.onAddStandupTapped")
     public var onStandupTapped: (Standup) -> Void = unimplemented("StandupsListModel.onStandupTapped")

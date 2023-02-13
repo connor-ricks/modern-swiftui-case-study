@@ -5,6 +5,7 @@ import PackageDescription
 
 let sharedDependencies: [Target.Dependency] = [
     .product(name: "Models", package: "Foundations"),
+    .product(name: "NavigationBackport", package: "Foundations"),
     .product(name: "Dependencies", package: "swift-dependencies"),
     .product(name: "IdentifiedCollections", package: "swift-identified-collections"),
     .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
