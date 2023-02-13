@@ -1,4 +1,5 @@
 import SwiftUI
+import NavigationBackport
 import SwiftUINavigation
 import XCTestDynamicOverlay
 import Dependencies
@@ -85,7 +86,7 @@ public struct StandupDetailView: View {
 
 struct StandupDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationStack {
+        NBNavigationStack {
             var standup = Standup.mock
             let _ = standup.duration = 60
             let _ = standup.attendees = [

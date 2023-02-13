@@ -7,16 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		95318B75298827B90010090A /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 95318B74298827B90010090A /* Models */; };
-		95318B79298828140010090A /* StandupsListFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 95318B78298828140010090A /* StandupsListFeature */; };
 		95B4B7A3299A966A0072FDE3 /* StandupsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B4B7A2299A966A0072FDE3 /* StandupsTabView.swift */; };
 		95B4B7A6299A969E0072FDE3 /* StandupsTabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B4B7A5299A969E0072FDE3 /* StandupsTabModel.swift */; };
 		95B4B7A9299A9B490072FDE3 /* ProfileTabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B4B7A8299A9B490072FDE3 /* ProfileTabModel.swift */; };
 		95B4B7AB299A9B500072FDE3 /* ProfileTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B4B7AA299A9B500072FDE3 /* ProfileTabView.swift */; };
+		95B4B7B4299AA9CC0072FDE3 /* EditStandupFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 95B4B7B3299AA9CC0072FDE3 /* EditStandupFeature */; };
+		95B4B7B6299AA9CC0072FDE3 /* RecordStandupFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 95B4B7B5299AA9CC0072FDE3 /* RecordStandupFeature */; };
+		95B4B7B8299AA9CC0072FDE3 /* StandupDetailFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 95B4B7B7299AA9CC0072FDE3 /* StandupDetailFeature */; };
+		95B4B7BA299AA9CC0072FDE3 /* StandupsListFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 95B4B7B9299AA9CC0072FDE3 /* StandupsListFeature */; };
+		95B4B7BC299AA9CC0072FDE3 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 95B4B7BB299AA9CC0072FDE3 /* Models */; };
+		95B4B7C0299AA9CC0072FDE3 /* SwiftUINavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 95B4B7BF299AA9CC0072FDE3 /* SwiftUINavigation */; };
+		95B4B7C2299AABCD0072FDE3 /* NavigationBackport in Frameworks */ = {isa = PBXBuildFile; productRef = 95B4B7C1299AABCD0072FDE3 /* NavigationBackport */; };
 		95C9609529949FB40092A978 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C9609429949FB40092A978 /* AppModel.swift */; };
-		BCBB2EB92997708F00AFB02F /* StandupDetailFeature in Frameworks */ = {isa = PBXBuildFile; productRef = BCBB2EB82997708F00AFB02F /* StandupDetailFeature */; };
-		BCBB2EBB2997FEA200AFB02F /* RecordStandupFeature in Frameworks */ = {isa = PBXBuildFile; productRef = BCBB2EBA2997FEA200AFB02F /* RecordStandupFeature */; };
-		BCBB2EBE2998182E00AFB02F /* EditStandupFeature in Frameworks */ = {isa = PBXBuildFile; productRef = BCBB2EBD2998182E00AFB02F /* EditStandupFeature */; };
 		BCBB2EC129981F9400AFB02F /* StandupTabPathComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBB2EC029981F9400AFB02F /* StandupTabPathComponent.swift */; };
 		BCBB2EC329981F9D00AFB02F /* StandupTabDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBB2EC229981F9D00AFB02F /* StandupTabDestination.swift */; };
 		CA7A2841291F5BF0003B349D /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7A2840291F5BF0003B349D /* App.swift */; };
@@ -30,6 +32,7 @@
 		95B4B7A5299A969E0072FDE3 /* StandupsTabModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandupsTabModel.swift; sourceTree = "<group>"; };
 		95B4B7A8299A9B490072FDE3 /* ProfileTabModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabModel.swift; sourceTree = "<group>"; };
 		95B4B7AA299A9B500072FDE3 /* ProfileTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabView.swift; sourceTree = "<group>"; };
+		95B4B7B2299AA7820072FDE3 /* Foundations */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Foundations; path = "../member-ios-app/Libraries/Foundation/Foundations"; sourceTree = "<group>"; };
 		95C9609429949FB40092A978 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		BCBB2EBC299813C500AFB02F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BCBB2EC029981F9400AFB02F /* StandupTabPathComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandupTabPathComponent.swift; sourceTree = "<group>"; };
@@ -43,11 +46,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				95318B75298827B90010090A /* Models in Frameworks */,
-				BCBB2EB92997708F00AFB02F /* StandupDetailFeature in Frameworks */,
-				BCBB2EBE2998182E00AFB02F /* EditStandupFeature in Frameworks */,
-				BCBB2EBB2997FEA200AFB02F /* RecordStandupFeature in Frameworks */,
-				95318B79298828140010090A /* StandupsListFeature in Frameworks */,
+				95B4B7BC299AA9CC0072FDE3 /* Models in Frameworks */,
+				95B4B7C2299AABCD0072FDE3 /* NavigationBackport in Frameworks */,
+				95B4B7B8299AA9CC0072FDE3 /* StandupDetailFeature in Frameworks */,
+				95B4B7BA299AA9CC0072FDE3 /* StandupsListFeature in Frameworks */,
+				95B4B7B6299AA9CC0072FDE3 /* RecordStandupFeature in Frameworks */,
+				95B4B7C0299AA9CC0072FDE3 /* SwiftUINavigation in Frameworks */,
+				95B4B7B4299AA9CC0072FDE3 /* EditStandupFeature in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +89,7 @@
 		CA7A2834291F5BF0003B349D = {
 			isa = PBXGroup;
 			children = (
+				95B4B7B2299AA7820072FDE3 /* Foundations */,
 				95318B7A298828280010090A /* Documentation */,
 				957E166F29841A4500BB8F88 /* Features */,
 				953B5B64298446B600671C9B /* Frameworks */,
@@ -130,11 +136,13 @@
 			);
 			name = Standups;
 			packageProductDependencies = (
-				95318B74298827B90010090A /* Models */,
-				95318B78298828140010090A /* StandupsListFeature */,
-				BCBB2EB82997708F00AFB02F /* StandupDetailFeature */,
-				BCBB2EBA2997FEA200AFB02F /* RecordStandupFeature */,
-				BCBB2EBD2998182E00AFB02F /* EditStandupFeature */,
+				95B4B7B3299AA9CC0072FDE3 /* EditStandupFeature */,
+				95B4B7B5299AA9CC0072FDE3 /* RecordStandupFeature */,
+				95B4B7B7299AA9CC0072FDE3 /* StandupDetailFeature */,
+				95B4B7B9299AA9CC0072FDE3 /* StandupsListFeature */,
+				95B4B7BB299AA9CC0072FDE3 /* Models */,
+				95B4B7BF299AA9CC0072FDE3 /* SwiftUINavigation */,
+				95B4B7C1299AABCD0072FDE3 /* NavigationBackport */,
 			);
 			productName = Standups;
 			productReference = CA7A283D291F5BF0003B349D /* Standups.app */;
@@ -344,7 +352,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -381,7 +389,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -466,25 +474,34 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		95318B74298827B90010090A /* Models */ = {
+		95B4B7B3299AA9CC0072FDE3 /* EditStandupFeature */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = Models;
+			productName = EditStandupFeature;
 		};
-		95318B78298828140010090A /* StandupsListFeature */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = StandupsListFeature;
-		};
-		BCBB2EB82997708F00AFB02F /* StandupDetailFeature */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = StandupDetailFeature;
-		};
-		BCBB2EBA2997FEA200AFB02F /* RecordStandupFeature */ = {
+		95B4B7B5299AA9CC0072FDE3 /* RecordStandupFeature */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RecordStandupFeature;
 		};
-		BCBB2EBD2998182E00AFB02F /* EditStandupFeature */ = {
+		95B4B7B7299AA9CC0072FDE3 /* StandupDetailFeature */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = EditStandupFeature;
+			productName = StandupDetailFeature;
+		};
+		95B4B7B9299AA9CC0072FDE3 /* StandupsListFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = StandupsListFeature;
+		};
+		95B4B7BB299AA9CC0072FDE3 /* Models */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Models;
+		};
+		95B4B7BF299AA9CC0072FDE3 /* SwiftUINavigation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2A17B9C92925763700E29B7B /* XCRemoteSwiftPackageReference "swiftui-navigation" */;
+			productName = SwiftUINavigation;
+		};
+		95B4B7C1299AABCD0072FDE3 /* NavigationBackport */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NavigationBackport;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

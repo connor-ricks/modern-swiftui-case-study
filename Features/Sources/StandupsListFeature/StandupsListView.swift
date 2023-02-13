@@ -1,4 +1,5 @@
 import SwiftUI
+import NavigationBackport
 import SwiftUINavigation
 import Dependencies
 
@@ -42,7 +43,7 @@ public struct StandupsListView: View {
 
 struct StandupsListView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationStack {
+        NBNavigationStack {
             withDependencies {
                 $0.standupsProvider = .mock(initialData: [.mock])
             } operation: {

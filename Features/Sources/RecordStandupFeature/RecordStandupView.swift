@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftUINavigation
+import NavigationBackport
 
 // MARK: - RecordStandupView
 
@@ -61,7 +62,7 @@ public struct RecordStandupView: View {
 
 struct RecordStandupView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationStack {
+        NBNavigationStack {
             RecordStandupView(
                 model: RecordStandupModel(standup: .mock)
             )

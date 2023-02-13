@@ -1,4 +1,5 @@
 import SwiftUI
+import NavigationBackport
 import SwiftUINavigation
 import Dependencies
 
@@ -25,7 +26,7 @@ struct ProfileTabView: View {
     // MARK: Body
 
     var body: some View {
-        NavigationStack {
+        NBNavigationStack {
             List {
                 Section("Actions") {
                     Button("Switch Tabs") {

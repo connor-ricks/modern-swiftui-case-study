@@ -44,9 +44,6 @@ class StandupsTabModel: ViewModel {
     // MARK: Bind
 
     private func bind() {
-        print("Path: \(path.debugDescription)")
-        print("Destination: \(destination.debugDescription)")
-
         // Bind Root View
         bind(standupsListModel: standupsListModel)
 

@@ -1,4 +1,5 @@
 import SwiftUI
+import NavigationBackport
 import SwiftUINavigation
 import Dependencies
 
@@ -25,9 +26,9 @@ struct StandupsTabView: View {
     // MARK: Body
 
     var body: some View {
-        NavigationStack(path: self.$model.path) {
+        NBNavigationStack(path: self.$model.path) {
             StandupsListView(model: model.standupsListModel)
-                .navigationDestination(for: StandupTabPathComponent.self) { path in
+                .nbNavigationDestination(for: StandupTabPathComponent.self) { path in
                     switch path {
                     case let .detail(standupDetailModel):
                         StandupDetailView(model: standupDetailModel)
@@ -42,7 +43,7 @@ struct StandupsTabView: View {
             switch destination {
             case .add(let model),
                  .edit(let model):
-                NavigationStack {
+                NBNavigationStack {
                     EditStandupView(model: model)
                 }
             }
