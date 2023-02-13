@@ -51,8 +51,8 @@ class StandupsAppModel: ViewModel {
         bind(standupsListModel: standupsListModel)
 
         // Bind Path
-        for destination in path {
-            switch destination {
+        for item in path {
+            switch item {
             case let .detail(standupDetailModel):
                 bind(standupDetailModel: standupDetailModel)
             case .meeting:
