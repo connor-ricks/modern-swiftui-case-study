@@ -26,14 +26,3 @@ class RecordMeetingTests: XCTestCase {
         }
     }
 }
-
-
-//withDependencies {
-//    $0.speechClient.requestAuthorization = { .authorized }
-//} operation: {
-//    NBNavigationStack {
-//        RecordStandupView(
-//            model: RecordStandupModel(standup: .mock)
-//        )
-//    }
-//}

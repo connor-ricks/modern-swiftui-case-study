@@ -27,31 +27,48 @@ struct ProfileTabView: View {
 
     var body: some View {
         NBNavigationStack {
-            List {
-                Section("Actions") {
-                    Button("Switch Tabs") {
-                        model.onSwitchTabsTapped()
-                    }
-
-                    Button("Add Standup") {
-                        model.onAddStandupTapped()
-                    }
-
-                    Button("Edit First Standup") {
-                        model.onEditFirstStandupTapped()
-                    }
+            if model.isLoadingDeepLink {
+                VStack(alignment: .center) {
+                    ProgressView()
+                        .progressViewStyle(.circular)
                 }
+            } else {
+                List {
+                    Section("Actions") {
+                        Button("Switch Tabs") {
+                            model.onSwitchTabsTapped()
+                        }
 
-                Section("Links") {
-                    Toggle("Should Go To Edit", isOn: $model.deeplinkToEdit)
-                    ForEach(model.standups) { standup in
-                        Button("Deeplink to \(standup.title)") {
-                            model.deeplink(to: standup)
+                        Button("Add Standup") {
+                            model.onAddStandupTapped()
+                        }
+
+                        Button("Edit First Standup") {
+                            model.onEditFirstStandupTapped()
+                        }
+                    }
+
+                    Section("Links") {
+                        Toggle("Should Go To Edit", isOn: $model.deeplinkToEdit)
+                        if model.standups == nil {
+                            VStack(alignment: .center) {
+                                ProgressView()
+                                    .progressViewStyle(.circular)
+                            }
+                            .frame(maxWidth: .infinity)
+                        } else if let standups = model.standups, !standups.isEmpty {
+                            ForEach(standups) { standup in
+                                Button("Deeplink to \(standup.title)") {
+                                    model.deeplink(to: standup)
+                                }
+                            }
+                        } else {
+                            Text("No Standups!")
                         }
                     }
                 }
+                .navigationTitle("Profile")
             }
-            .navigationTitle("Profile")
         }
     }
 }

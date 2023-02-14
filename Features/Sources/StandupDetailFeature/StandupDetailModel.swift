@@ -24,6 +24,16 @@ public class StandupDetailModel: ViewModel {
         self.standup = standup
         super.init()
     }
+
+    public init?(id: Standup.ID) async {
+        @Dependency(\.standupsProvider) var standupsProvider
+        guard let standup = (try? await standupsProvider.load())?.first(where: { $0.id == id }) else {
+            return nil
+        }
+
+        self.standup = standup
+        super.init()
+    }
     
     // MARK: Actions
     

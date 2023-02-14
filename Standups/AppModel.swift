@@ -24,8 +24,13 @@ class AppModel: ViewModel {
 
     @Published var selectedTab: Tab
 
-    let standupsTabModel: StandupsTabModel
-    let profileTabModel: ProfileTabModel
+    @Published var standupsTabModel: StandupsTabModel {
+        didSet { bind() }
+    }
+
+    @Published var profileTabModel: ProfileTabModel {
+        didSet { bind() }
+    }
 
     // MARK: Initializers
 
@@ -58,48 +63,30 @@ class AppModel: ViewModel {
             self?.standupsTabModel.presentEditStandup(for: .mock)
         }
 
-        profileTabModel.onDeepLinkDetailStandup = { [weak self] standup, shouldEdit in
-            self?.open(url: "standups://standups/\(standup.id)?edit=\(String(shouldEdit))")
+        profileTabModel.onDeepLink = { [weak self] url in
+            await self?.open(url: url)
         }
     }
 
     // MARK: DeepLink
 
-    func open(url: String) {
-//        guard let components = URLComponents(string: url),
-//              let tab = AppModel.Tab(rawValue: components.scheme ?? "")
-//        else {
-//            return
-//        }
-//
-//        switch tab {
-//        case .standups:
-//            var path = ArraySlice(components.path.components(separatedBy: "/").filter { !$0.allSatisfy(\.isWhitespace) })
-//
-//            var id: Standup.ID
-//            if let string = path.popFirst(),
-//               let uuid = UUID(uuidString: string) {
-//                id = .init(uuid)
-//            } else {
-//                assertionFailure("No Standup ID specified")
-//                return
-//            }
-//
-//            guard let standup = self.standupsTabModel.standupsListModel.standups[id: id] else {
-//                assertionFailure("Invalid Standup ID")
-//                return
-//            }
-//
-//            var editPath: StandupTabPathComponent? = nil
-//            if let item = components.queryItems?.first(where: { $0.name == "edit" }),
-//               let value = Bool(item.value ?? "") {
-//
-//            }
-//
-//            selectedTab = .standups
-//            standupsTabModel.path = [.detail(model: .init(standup: standup))]
-//        case .profile:
-//            break
-//        }
+    func open(url: URL) async {
+        guard let components = DeepLinkParser.target(for: url) else {
+            print("Invalid DeepLink!")
+            return
+        }
+
+        switch components.target {
+        case .standups:
+            guard let model = await DeepLinkParser.standupsTabModel(for: components.path, parameters: components.parameters) else {
+                assertionFailure("Invalid DeepLink")
+                return
+            }
+
+            standupsTabModel = model
+            selectedTab = .standups
+        case .profile:
+            break
+        }
     }
 }

@@ -15,22 +15,32 @@ class ProfileTabModel: ViewModel {
     var onSwitchTabsTapped: () -> Void =  unimplemented("ProfileTabModel.onSwitchTabsTapped")
     var onAddStandupTapped: () -> Void = unimplemented("ProfileTabModel.onAddStandupTapped")
     var onEditFirstStandupTapped: () -> Void = unimplemented("ProfileTabModel.onEditFirstStandupTapped")
-    var onDeepLinkDetailStandup: (Standup, Bool) -> Void = unimplemented("ProfileTabModel.onDeepLinkDetailStandup")
+    var onDeepLink: (URL) async -> Void = unimplemented("ProfileTabModel.onDeepLinkDetailStandup")
 
     @Dependency(\.standupsProvider) var standupsProvider
-    @Published var standups: IdentifiedArrayOf<Standup> = []
+    @Published var standups: IdentifiedArrayOf<Standup>?
     @Published var deeplinkToEdit: Bool = false
+
+    @Published var isLoadingDeepLink: Bool = false
 
     // MARK: Initializers
 
     override init() {
         super.init()
-//        standups = (try? standupsProvider.load()) ?? []
+        Task {
+            self.standups = (try? await standupsProvider.load()) ?? []
+        }
     }
 
     // MARK: Actions
 
     func deeplink(to standup: Standup) {
-        onDeepLinkDetailStandup(standup, deeplinkToEdit)
+        let url = URL(string: "standups://standups/\(standup.id)?edit=\(String(deeplinkToEdit))")!
+
+        Task {
+            isLoadingDeepLink = true
+            await onDeepLink(url)
+            isLoadingDeepLink = false
+        }
     }
 }

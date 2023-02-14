@@ -18,6 +18,7 @@
 		95B4B7CC299AB6A50072FDE3 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 95B4B7CB299AB6A50072FDE3 /* Models */; };
 		95B4B7CE299AB6A50072FDE3 /* NavigationBackport in Frameworks */ = {isa = PBXBuildFile; productRef = 95B4B7CD299AB6A50072FDE3 /* NavigationBackport */; };
 		95B629B1299AF21500CB5322 /* StandupsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B629B0299AF21500CB5322 /* StandupsTests.swift */; };
+		95B629B8299BEC1500CB5322 /* DeepLinkParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B629B7299BEC1500CB5322 /* DeepLinkParser.swift */; };
 		95C9609529949FB40092A978 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C9609429949FB40092A978 /* AppModel.swift */; };
 		BCBB2EC129981F9400AFB02F /* StandupTabPathComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBB2EC029981F9400AFB02F /* StandupTabPathComponent.swift */; };
 		BCBB2EC329981F9D00AFB02F /* StandupTabDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBB2EC229981F9D00AFB02F /* StandupTabDestination.swift */; };
@@ -45,6 +46,7 @@
 		95B4B7B2299AA7820072FDE3 /* Foundations */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Foundations; sourceTree = "<group>"; };
 		95B629AE299AF21500CB5322 /* StandupsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StandupsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		95B629B0299AF21500CB5322 /* StandupsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandupsTests.swift; sourceTree = "<group>"; };
+		95B629B7299BEC1500CB5322 /* DeepLinkParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkParser.swift; sourceTree = "<group>"; };
 		95C9609429949FB40092A978 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		BCBB2EBC299813C500AFB02F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BCBB2EC029981F9400AFB02F /* StandupTabPathComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandupTabPathComponent.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				4B1E727629283445008B1AAB /* Info.plist */,
 				CA7A2840291F5BF0003B349D /* App.swift */,
 				95C9609429949FB40092A978 /* AppModel.swift */,
+				95B629B7299BEC1500CB5322 /* DeepLinkParser.swift */,
 				BCBB2EBC299813C500AFB02F /* Assets.xcassets */,
 				95B4B7A7299A9B3B0072FDE3 /* ProfileTab */,
 				95B4B7A4299A968E0072FDE3 /* StandupsTab */,
@@ -271,6 +274,7 @@
 				CA7A2841291F5BF0003B349D /* App.swift in Sources */,
 				95B4B7A6299A969E0072FDE3 /* StandupsTabModel.swift in Sources */,
 				95B4B7AB299A9B500072FDE3 /* ProfileTabView.swift in Sources */,
+				95B629B8299BEC1500CB5322 /* DeepLinkParser.swift in Sources */,
 				95B4B7A3299A966A0072FDE3 /* StandupsTabView.swift in Sources */,
 				95B4B7A9299A9B490072FDE3 /* ProfileTabModel.swift in Sources */,
 				BCBB2EC129981F9400AFB02F /* StandupTabPathComponent.swift in Sources */,
