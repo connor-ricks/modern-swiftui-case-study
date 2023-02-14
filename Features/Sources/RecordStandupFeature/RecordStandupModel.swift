@@ -1,7 +1,7 @@
 import SwiftUI
-import Speech
 import SwiftUINavigation
 import Dependencies
+import Speech
 
 import Models
 

@@ -1,6 +1,7 @@
 import SwiftUI
-import NavigationBackport
 import SwiftUINavigation
+import IdentifiedCollections
+import NavigationBackport
 import Dependencies
 
 import Models
@@ -23,29 +24,54 @@ public struct StandupsListView: View {
     
     public var body: some View {
         List {
-            ForEach(model.standups) { standup in
-                Button(action: { model.standupTapped(standup: standup) }) {
-                    CardView(standup: standup)
+            switch model.state {
+            case .loading:
+                VStack(alignment: .center) {
+                    Spacer()
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                    Spacer()
                 }
-                .listRowBackground(standup.theme.primaryColor)
+                .frame(maxWidth: .infinity)
+            case let .loaded(standups):
+                body(for: standups)
+            case .error:
+                VStack(alignment: .center) {
+                    Text("Unable to load standups")
+                    Button("Try Again") { model.tryAgainButtonTapped() }
+                        .buttonStyle(.borderedProminent)
+                }
+                .frame(maxWidth: .infinity)
             }
         }
+        .task { await model.task() }
+        .animation(.default, value: model.state)
+        .navigationTitle("Daily Standups")
         .toolbar {
             Button(action: { model.addStandupButtonTapped() }) {
                 Image(systemName: "plus")
             }
         }
-        .navigationTitle("Daily Standups")
+    }
+
+    private func body(for standups: IdentifiedArrayOf<Standup>) -> some View {
+        ForEach(standups) { standup in
+            Button(action: { model.standupTapped(standup: standup) }) {
+                CardView(standup: standup)
+            }
+            .listRowBackground(standup.theme.primaryColor)
+        }
     }
 }
 
- // MARK: - StandupsListView+Previews
+// MARK: - StandupsListView+Previews
 
 struct StandupsListView_Previews: PreviewProvider {
     static var previews: some View {
         NBNavigationStack {
             withDependencies {
-                $0.standupsProvider = .mock(initialData: [.mock])
+                $0.standupsProvider = .liveValue
+//                $0.standupsProvider = .mock(initialData: [.mock])
             } operation: {
                 StandupsListView(
                     model: StandupsListModel()

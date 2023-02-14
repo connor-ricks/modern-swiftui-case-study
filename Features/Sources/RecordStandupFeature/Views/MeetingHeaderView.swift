@@ -2,6 +2,8 @@ import SwiftUI
 
 import Models
 
+// MARK: - MeetingHeaderView
+
 struct MeetingHeaderView: View {
     
     // MARK: Properties
@@ -45,6 +47,8 @@ struct MeetingHeaderView: View {
         return TimeInterval(secondsElapsed) / TimeInterval(totalDuration)
     }
 }
+
+// MARK: - MeetingProgressViewStyle
 
 private struct MeetingProgressViewStyle: ProgressViewStyle {
     var theme: StandupTheme

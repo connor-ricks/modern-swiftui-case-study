@@ -6,11 +6,20 @@ import Models
 
 @MainActor
 final public class StandupsListModel: ObservableObject {
-    
+
+    // MARK: State
+
+    public enum State: Equatable {
+        case loading
+        case loaded(IdentifiedArrayOf<Standup>)
+        case error
+    }
+
     // MARK: Properties
     
     @Dependency(\.standupsProvider) var standupsProvider
-    @Published public var standups: IdentifiedArrayOf<Standup> {
+
+    @Published public var state: State {
         didSet {
             saveStandups()
         }
@@ -22,8 +31,7 @@ final public class StandupsListModel: ObservableObject {
     // MARK: Initializers
     
     public init() {
-        self.standups = []
-        self.loadStandups()
+        self.state = .loading
     }
     
     // MARK: Actions
@@ -35,22 +43,30 @@ final public class StandupsListModel: ObservableObject {
     func standupTapped(standup: Standup) {
         onStandupTapped(standup)
     }
+
+    func tryAgainButtonTapped() {
+        Task {
+            state = .loading
+            await loadStandups()
+        }
+    }
+
+    func task() async {
+        await loadStandups()
+    }
     
     // MARK: Persistence
     
     private func saveStandups() {
-        do {
-            try standupsProvider.save(standups)
-        } catch {
-            // TODO: Handle Errors!
-        }
+        guard case let .loaded(standups) = state else { return }
+        try? standupsProvider.save(standups)
     }
     
-    private func loadStandups() {
+    private func loadStandups() async {
         do {
-            self.standups = try standupsProvider.load()
+            self.state = .loaded(try await standupsProvider.load())
         } catch {
-            // TODO: Handle Errors!
+            self.state = .error
         }
     }
 }

@@ -6,8 +6,8 @@ import Models
 
 // MARK: - StandupsProvider
 
-public struct StandupsProvider: Sendable {
-    public var load: @Sendable () throws -> IdentifiedArrayOf<Standup>
+public struct StandupsProvider {
+    public var load: @Sendable () async throws -> IdentifiedArrayOf<Standup>
     public var save: @Sendable (IdentifiedArrayOf<Standup>) throws -> Void
 }
 
@@ -33,7 +33,8 @@ extension StandupsProvider: DependencyKey {
     
     public static let liveValue = StandupsProvider(
         load: {
-            try JSONDecoder().decode(
+            try? await Task.sleep(nanoseconds: 5_000_000_000) // Simulating async loading.
+            return try JSONDecoder().decode(
                 IdentifiedArray.self,
                 from: try Data(contentsOf: Constants.standupsURL)
             )

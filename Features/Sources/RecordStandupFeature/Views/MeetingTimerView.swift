@@ -53,6 +53,9 @@ struct MeetingTimerView: View {
 // MARK: - SpeakerArc
 
 struct SpeakerArc: Shape {
+
+    // MARK: Properties
+
     let totalSpeakers: Int
     let speakerIndex: Int
     
@@ -65,6 +68,8 @@ struct SpeakerArc: Shape {
     private var endAngle: Angle {
         Angle(degrees: startAngle.degrees + degreesPerSpeaker - 1.0)
     }
+
+    // MARK: Path
     
     func path(in rect: CGRect) -> Path {
         let diameter = min(rect.size.width, rect.size.height) - 24.0

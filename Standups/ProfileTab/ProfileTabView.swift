@@ -41,6 +41,15 @@ struct ProfileTabView: View {
                         model.onEditFirstStandupTapped()
                     }
                 }
+
+                Section("Links") {
+                    Toggle("Should Go To Edit", isOn: $model.deeplinkToEdit)
+                    ForEach(model.standups) { standup in
+                        Button("Deeplink to \(standup.title)") {
+                            model.deeplink(to: standup)
+                        }
+                    }
+                }
             }
             .navigationTitle("Profile")
         }

@@ -15,7 +15,7 @@ class AppModel: ViewModel {
 
     // MARK: Properties
 
-    enum Tab {
+    enum Tab: String {
         case standups
         case profile
     }
@@ -57,5 +57,49 @@ class AppModel: ViewModel {
             self?.selectedTab = .standups
             self?.standupsTabModel.presentEditStandup(for: .mock)
         }
+
+        profileTabModel.onDeepLinkDetailStandup = { [weak self] standup, shouldEdit in
+            self?.open(url: "standups://standups/\(standup.id)?edit=\(String(shouldEdit))")
+        }
+    }
+
+    // MARK: DeepLink
+
+    func open(url: String) {
+//        guard let components = URLComponents(string: url),
+//              let tab = AppModel.Tab(rawValue: components.scheme ?? "")
+//        else {
+//            return
+//        }
+//
+//        switch tab {
+//        case .standups:
+//            var path = ArraySlice(components.path.components(separatedBy: "/").filter { !$0.allSatisfy(\.isWhitespace) })
+//
+//            var id: Standup.ID
+//            if let string = path.popFirst(),
+//               let uuid = UUID(uuidString: string) {
+//                id = .init(uuid)
+//            } else {
+//                assertionFailure("No Standup ID specified")
+//                return
+//            }
+//
+//            guard let standup = self.standupsTabModel.standupsListModel.standups[id: id] else {
+//                assertionFailure("Invalid Standup ID")
+//                return
+//            }
+//
+//            var editPath: StandupTabPathComponent? = nil
+//            if let item = components.queryItems?.first(where: { $0.name == "edit" }),
+//               let value = Bool(item.value ?? "") {
+//
+//            }
+//
+//            selectedTab = .standups
+//            standupsTabModel.path = [.detail(model: .init(standup: standup))]
+//        case .profile:
+//            break
+//        }
     }
 }

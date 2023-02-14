@@ -1,4 +1,3 @@
-import Foundation
 import Speech
 
 struct SpeechTranscription: Equatable {

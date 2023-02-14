@@ -1,4 +1,3 @@
-import Foundation
 import SwiftUI
 import SwiftUINavigation
 
@@ -62,13 +61,18 @@ public struct EditStandupView: View {
         .navigationTitle(model.navigationTitle)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button("Dismiss") { self.model.cancelEditingButtonTapped() }
+                Button("Dismiss") { model.cancelEditingButtonTapped() }
             }
             ToolbarItem(placement: .confirmationAction) {
-                Button("Save") { self.model.finishEditingButtonTapped() }
+                Button("Save") { model.finishEditingButtonTapped() }
             }
         }
         .bind($model.focus, to: $focus)
+        .alert(
+            unwrapping: $model.destination,
+            case: /EditStandupModel.Destination.alert,
+            action: { _ in }
+        )
     }
 }
 

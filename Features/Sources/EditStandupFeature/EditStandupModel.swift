@@ -1,13 +1,26 @@
 import SwiftUI
+import SwiftUINavigation
+import Dependencies
 import XCTestDynamicOverlay
 
 import Models
 
 public class EditStandupModel: ViewModel {
-    
+
+    // MARK: Destination
+
+    public enum Destination {
+        case alert(AlertState<Void>)
+    }
+
     // MARK: Properties
 
+
     let navigationTitle: String
+    
+    @Dependency(\.uuid) var uuid
+
+    @Published var destination: Destination?
     @Published var focus: EditStandupView.Field?
     @Published var standup: Standup
 
@@ -17,14 +30,15 @@ public class EditStandupModel: ViewModel {
     // MARK: Initializers
     
     public init(focus: EditStandupView.Field? = .title, standup: Standup? = nil) {
+        @Dependency(\.uuid) var uuid
+
         self.navigationTitle = standup?.title ?? "New Standup"
         self.focus = focus
-        self.standup = standup ?? .init(id: .init(UUID()))
+        self.standup = standup ?? .init(id: .init(uuid()))
         super.init()
         
         if self.standup.attendees.isEmpty {
-            /// `UUID` generation should be powered by a `@Dependency`.
-            self.standup.attendees.append(Attendee(id: Attendee.ID(UUID()), name: ""))
+            self.standup.attendees.append(Attendee(id: Attendee.ID(uuid()), name: ""))
         }
     }
     
@@ -33,8 +47,7 @@ public class EditStandupModel: ViewModel {
     func deleteAttendees(atOffsets indices: IndexSet) {
         standup.attendees.remove(atOffsets: indices)
         if standup.attendees.isEmpty {
-            /// `UUID` generation should be powered by a `@Dependency`.
-            standup.attendees.append(Attendee(id: Attendee.ID(UUID()), name: ""))
+            standup.attendees.append(Attendee(id: Attendee.ID(uuid()), name: ""))
         }
         
         let index = min(indices.first!, standup.attendees.count - 1)
@@ -42,15 +55,24 @@ public class EditStandupModel: ViewModel {
     }
     
     func addAttendeeButtonTapped() {
-        /// `UUID` generation should be powered by a `@Dependency`.
-        let attendee = Attendee(id: Attendee.ID(UUID()), name: "")
+        let attendee = Attendee(id: Attendee.ID(uuid()), name: "")
         standup.attendees.append(attendee)
         focus = .attendee(attendee.id)
     }
 
     func finishEditingButtonTapped() {
-        standup.attendees = standup.attendees.filter { !$0.name.allSatisfy(\.isWhitespace) }
-        onEditingFinished(standup)
+        if standup.title.isEmpty || standup.title.allSatisfy(\.isWhitespace) {
+            destination = .alert(
+                AlertState(
+                    title: TextState("Oops!"),
+                    message: TextState("You cannot save a standup without a title."),
+                    buttons: [.default(TextState("Okay"))]
+                )
+            )
+        } else {
+            standup.attendees = standup.attendees.filter { !$0.name.allSatisfy(\.isWhitespace) }
+            onEditingFinished(standup)
+        }
     }
 
     func cancelEditingButtonTapped() {

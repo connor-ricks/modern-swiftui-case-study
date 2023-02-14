@@ -116,7 +116,9 @@ extension StandupsTabModel {
         }
 
         standupDetailModel.onDeleteTapped = { [weak self] standup in
-            self?.standupsListModel.standups.remove(id: standup.id)
+            guard case var .loaded(standups) = self?.standupsListModel.state else { return }
+            standups.remove(id: standup.id)
+            self?.standupsListModel.state = .loaded(standups)
             _ = self?.path.popLast()
         }
 
@@ -129,7 +131,9 @@ extension StandupsTabModel {
         }
 
         standupDetailModel.onStandupDidChange = { [weak self] standup in
-            self?.standupsListModel.standups[id: standup.id] = standup
+            guard case var .loaded(standups) = self?.standupsListModel.state else { return }
+            standups[id: standup.id] = standup
+            self?.standupsListModel.state = .loaded(standups)
         }
     }
 }
@@ -159,7 +163,9 @@ extension StandupsTabModel {
         }
 
         editStandupModel.onEditingFinished = { [weak self] standup in
-            self?.standupsListModel.standups.append(standup)
+            guard case var .loaded(standups) = self?.standupsListModel.state else { return }
+            standups.append(standup)
+            self?.standupsListModel.state = .loaded(standups)
             self?.destination = nil
         }
     }
