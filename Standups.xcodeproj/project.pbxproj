@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9529E973299D3692008F3DBE /* ProfileTabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9529E971299D3692008F3DBE /* ProfileTabModel.swift */; };
+		9529E974299D3692008F3DBE /* ProfileTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9529E972299D3692008F3DBE /* ProfileTabView.swift */; };
 		95B4B7A3299A966A0072FDE3 /* StandupsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B4B7A2299A966A0072FDE3 /* StandupsTabView.swift */; };
 		95B4B7A6299A969E0072FDE3 /* StandupsTabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B4B7A5299A969E0072FDE3 /* StandupsTabModel.swift */; };
-		95B4B7A9299A9B490072FDE3 /* ProfileTabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B4B7A8299A9B490072FDE3 /* ProfileTabModel.swift */; };
-		95B4B7AB299A9B500072FDE3 /* ProfileTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B4B7AA299A9B500072FDE3 /* ProfileTabView.swift */; };
 		95B4B7C4299AB6A20072FDE3 /* EditStandupFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 95B4B7C3299AB6A20072FDE3 /* EditStandupFeature */; };
 		95B4B7C6299AB6A20072FDE3 /* RecordStandupFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 95B4B7C5299AB6A20072FDE3 /* RecordStandupFeature */; };
 		95B4B7C8299AB6A20072FDE3 /* StandupDetailFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 95B4B7C7299AB6A20072FDE3 /* StandupDetailFeature */; };
@@ -37,12 +37,12 @@
 
 /* Begin PBXFileReference section */
 		4B1E727629283445008B1AAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		9529E971299D3692008F3DBE /* ProfileTabModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTabModel.swift; sourceTree = "<group>"; };
+		9529E972299D3692008F3DBE /* ProfileTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTabView.swift; sourceTree = "<group>"; };
 		95318B7A298828280010090A /* Documentation */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Documentation; sourceTree = "<group>"; };
 		957E166F29841A4500BB8F88 /* Features */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Features; sourceTree = "<group>"; };
 		95B4B7A2299A966A0072FDE3 /* StandupsTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandupsTabView.swift; sourceTree = "<group>"; };
 		95B4B7A5299A969E0072FDE3 /* StandupsTabModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandupsTabModel.swift; sourceTree = "<group>"; };
-		95B4B7A8299A9B490072FDE3 /* ProfileTabModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabModel.swift; sourceTree = "<group>"; };
-		95B4B7AA299A9B500072FDE3 /* ProfileTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabView.swift; sourceTree = "<group>"; };
 		95B4B7B2299AA7820072FDE3 /* Foundations */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Foundations; sourceTree = "<group>"; };
 		95B629AE299AF21500CB5322 /* StandupsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StandupsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		95B629B0299AF21500CB5322 /* StandupsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandupsTests.swift; sourceTree = "<group>"; };
@@ -79,6 +79,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9529E970299D3692008F3DBE /* ProfileTab */ = {
+			isa = PBXGroup;
+			children = (
+				9529E971299D3692008F3DBE /* ProfileTabModel.swift */,
+				9529E972299D3692008F3DBE /* ProfileTabView.swift */,
+			);
+			path = ProfileTab;
+			sourceTree = "<group>";
+		};
 		953B5B64298446B600671C9B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -95,15 +104,6 @@
 				BCBB2EC029981F9400AFB02F /* StandupTabPathComponent.swift */,
 			);
 			path = StandupsTab;
-			sourceTree = "<group>";
-		};
-		95B4B7A7299A9B3B0072FDE3 /* ProfileTab */ = {
-			isa = PBXGroup;
-			children = (
-				95B4B7A8299A9B490072FDE3 /* ProfileTabModel.swift */,
-				95B4B7AA299A9B500072FDE3 /* ProfileTabView.swift */,
-			);
-			path = ProfileTab;
 			sourceTree = "<group>";
 		};
 		95B629AF299AF21500CB5322 /* StandupsTests */ = {
@@ -144,7 +144,7 @@
 				95C9609429949FB40092A978 /* AppModel.swift */,
 				95B629B7299BEC1500CB5322 /* DeepLinkParser.swift */,
 				BCBB2EBC299813C500AFB02F /* Assets.xcassets */,
-				95B4B7A7299A9B3B0072FDE3 /* ProfileTab */,
+				9529E970299D3692008F3DBE /* ProfileTab */,
 				95B4B7A4299A968E0072FDE3 /* StandupsTab */,
 			);
 			path = Standups;
@@ -272,11 +272,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA7A2841291F5BF0003B349D /* App.swift in Sources */,
+				9529E973299D3692008F3DBE /* ProfileTabModel.swift in Sources */,
 				95B4B7A6299A969E0072FDE3 /* StandupsTabModel.swift in Sources */,
-				95B4B7AB299A9B500072FDE3 /* ProfileTabView.swift in Sources */,
 				95B629B8299BEC1500CB5322 /* DeepLinkParser.swift in Sources */,
+				9529E974299D3692008F3DBE /* ProfileTabView.swift in Sources */,
 				95B4B7A3299A966A0072FDE3 /* StandupsTabView.swift in Sources */,
-				95B4B7A9299A9B490072FDE3 /* ProfileTabModel.swift in Sources */,
 				BCBB2EC129981F9400AFB02F /* StandupTabPathComponent.swift in Sources */,
 				95C9609529949FB40092A978 /* AppModel.swift in Sources */,
 				BCBB2EC329981F9D00AFB02F /* StandupTabDestination.swift in Sources */,
