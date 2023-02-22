@@ -33,7 +33,7 @@ extension StandupsProvider: DependencyKey {
     
     public static let liveValue = StandupsProvider(
         load: {
-            try? await Task.sleep(nanoseconds: 5_000_000_000) // Simulating async loading.
+            try? await Task.sleep(nanoseconds: 2_000_000_000) // Simulating async loading.
             return try JSONDecoder().decode(
                 IdentifiedArray.self,
                 from: try Data(contentsOf: Constants.standupsURL)
